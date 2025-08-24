@@ -1,11 +1,12 @@
-import { Github, Twitter, Linkedin, Heart } from 'lucide-react';
+import { Github, Linkedin, Heart, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import linkrLogo from '@/assets/linkr-logo.png';
 
 export function Footer() {
   const socialLinks = [
-    { name: 'GitHub', href: '#', icon: Github },
-    { name: 'Twitter', href: '#', icon: Twitter },
-    { name: 'LinkedIn', href: '#', icon: Linkedin },
+    { name: 'GitHub', href: 'https://github.com/writetosagnik', icon: Github },
+    { name: 'Reddit', href: 'https://www.reddit.com/user/Comfortable-Web-5719/', icon: MessageSquare },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/sagnik-pal-930160277/', icon: Linkedin },
   ];
 
   return (
@@ -14,7 +15,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neon-green">linkr</h3>
+            <div className="flex items-center space-x-2">
+              <img 
+                src={linkrLogo} 
+                alt="linkr logo" 
+                className="h-6 w-6 object-contain"
+              />
+              <h3 className="text-lg font-semibold text-neon-green">linkr</h3>
+            </div>
             <p className="text-muted-foreground text-sm">
               Generate high-quality QR codes from any URL instantly. Fast, free, and secure.
             </p>
@@ -45,6 +53,8 @@ export function Footer() {
                 <a
                   key={link.name}
                   href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-lg border border-border hover:border-neon-green hover:bg-secondary transition-all duration-300 hover:glow-effect"
                   aria-label={link.name}
                 >
@@ -59,11 +69,8 @@ export function Footer() {
           <p className="text-muted-foreground text-sm flex items-center justify-center gap-1">
             Made with <Heart className="h-4 w-4 text-red-500" /> by{' '}
             <Link to="/developer" className="text-neon-green hover:text-neon-green-bright transition-colors duration-300">
-              Developer
+              Sagnik
             </Link>
-          </p>
-          <p className="text-muted-foreground text-xs mt-2">
-            © 2024 linkr. All rights reserved.
           </p>
         </div>
       </div>

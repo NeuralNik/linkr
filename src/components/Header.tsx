@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './ThemeToggle';
+import linkrLogo from '@/assets/linkr-logo.png';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,10 +21,12 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="p-2 rounded-lg bg-gradient-primary group-hover:animate-glow transition-all duration-300">
-              <Zap className="h-6 w-6 text-primary-foreground" />
-            </div>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <img 
+              src={linkrLogo} 
+              alt="linkr logo" 
+              className="h-8 w-8 object-contain group-hover:animate-glow transition-all duration-300"
+            />
             <span className="text-xl font-bold text-glow group-hover:text-neon-green-bright transition-colors duration-300">
               linkr
             </span>
