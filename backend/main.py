@@ -13,7 +13,17 @@ app = FastAPI(title="linkr API", description="QR Code Generation API", version="
 # CORS middleware to allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:8080", "http://localhost:8081", "http://localhost:8082"],  # Vite dev server
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173", 
+        "http://localhost:5174",  # Current frontend port
+        "http://127.0.0.1:5174",  # Current frontend port
+        "http://localhost:8080", 
+        "http://localhost:8081", 
+        "http://localhost:8082",
+        "https://*.vercel.app",  # Allow all Vercel deployments
+        "https://linkr-writetosagnik.vercel.app",  # Your specific deployment
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
