@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* linkr Design System - Dark theme with neon green accents */
+
+@layer base {
+  :root {
+    /* Dark theme (default) */
+    --background: 220 13% 4%;
+    --foreground: 120 100% 85%;
+
+    --card: 220 13% 6%;
+    --card-foreground: 120 100% 85%;
+
+    --popover: 220 13% 6%;
+    --popover-foreground: 120 100% 85%;
+
+    --primary: 120 100% 65%;
+    --primary-foreground: 220 13% 4%;
+
+    --secondary: 220 13% 10%;
+    --secondary-foreground: 120 100% 85%;
+
+    --muted: 220 13% 8%;
+    --muted-foreground: 120 20% 65%;
+
+    --accent: 120 100% 50%;
+    --accent-foreground: 220 13% 4%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 120 100% 95%;
+
+    --border: 120 100% 25%;
+    --input: 220 13% 10%;
+    --ring: 120 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom QR Generator colors */
+    --neon-green: 120 100% 50%;
+    --neon-green-bright: 120 100% 65%;
+    --neon-green-dim: 120 50% 40%;
+    --glass-bg: 220 13% 6% / 0.8;
+    --glass-border: 120 100% 50% / 0.2;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 50%), hsl(120 100% 65%));
+    --gradient-card: linear-gradient(135deg, hsl(220 13% 6% / 0.8), hsl(220 13% 8% / 0.9));
+    
+    /* Sidebar variables */
+    --sidebar-background: 220 13% 4%;
+    --sidebar-foreground: 120 100% 85%;
+    --sidebar-primary: 120 100% 50%;
+    --sidebar-primary-foreground: 220 13% 4%;
+    --sidebar-accent: 220 13% 8%;
+    --sidebar-accent-foreground: 120 100% 85%;
+    --sidebar-border: 120 100% 25%;
+    --sidebar-ring: 120 100% 50%;
+  }
+
+  .light {
+    /* Light theme */
+    --background: 0 0% 100%;
+    --foreground: 220 13% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 15%;
+
+    --primary: 120 100% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 120 20% 95%;
+    --secondary-foreground: 220 13% 15%;
+
+    --muted: 120 20% 96%;
+    --muted-foreground: 220 13% 45%;
+
+    --accent: 120 100% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 120 20% 90%;
+    --input: 120 20% 96%;
+    --ring: 120 100% 35%;
+
+    /* Light theme custom colors */
+    --neon-green: 120 100% 35%;
+    --neon-green-bright: 120 100% 30%;
+    --neon-green-dim: 120 40% 50%;
+    --glass-bg: 0 0% 100% / 0.9;
+    --glass-border: 120 100% 35% / 0.2;
+    
+    /* Light theme gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 35%), hsl(120 100% 25%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100% / 0.9), hsl(120 20% 98%));
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 13% 15%;
+    --sidebar-primary: 120 100% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 120 20% 95%;
+    --sidebar-accent-foreground: 220 13% 15%;
+    --sidebar-border: 120 20% 90%;
+    --sidebar-ring: 120 100% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-mono;
+    font-family: 'JetBrains Mono', monospace;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--neon-green));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--neon-green-bright));
+  }
+}
+
+@layer utilities {
+  .glass-effect {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  .glow-effect {
+    box-shadow: 0 0 20px hsl(var(--neon-green) / 0.3);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px hsl(var(--neon-green) / 0.5);
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 5px hsl(var(--neon-green) / 0.2), 0 0 10px hsl(var(--neon-green) / 0.2), 0 0 15px hsl(var(--neon-green) / 0.2);
+    }
+    to {
+      box-shadow: 0 0 10px hsl(var(--neon-green) / 0.4), 0 0 20px hsl(var(--neon-green) / 0.4), 0 0 30px hsl(var(--neon-green) / 0.4);
+    }
+  }
+}
