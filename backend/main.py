@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, HttpUrl
@@ -7,27 +7,28 @@ import io
 import base64
 from typing import Union
 import re
+import os
 
 app = FastAPI(title="linkr API", description="QR Code Generation API", version="1.0.0")
 
 # CORS middleware to allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173", 
-        "http://127.0.0.1:5173", 
-        "http://localhost:5174",  # Current frontend port
-        "http://127.0.0.1:5174",  # Current frontend port
-        "http://localhost:8080", 
-        "http://localhost:8081", 
-        "http://localhost:8082",
-        "https://*.vercel.app",  # Allow all Vercel deployments
-        "https://linkr-writetosagnik.vercel.app",  # Your specific deployment
-    ],
+    allow_origins=["*"],  # Allow all origins for Railway deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Additional CORS middleware for Railway
+@app.middleware("http")
+async def add_cors_header(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 class URLRequest(BaseModel):
     url: str
