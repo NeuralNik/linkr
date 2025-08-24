@@ -95,6 +95,66 @@
    - **Backend API**: http://localhost:8000
    - **API Documentation**: http://localhost:8000/docs
 
+## 🌐 Deployment
+
+### **Deploy to Vercel (Frontend)**
+
+1. **Prerequisites**
+   - Vercel account
+   - Backend deployed separately (see options below)
+
+2. **Frontend Deployment**
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Deploy
+   vercel
+   ```
+
+3. **Environment Variables**
+   Set in Vercel dashboard:
+   ```
+   VITE_API_BASE_URL=https://your-backend-url.vercel.app
+   ```
+
+### **Backend Deployment Options**
+
+#### **Option 1: Vercel (Recommended)**
+```bash
+# Create separate backend deployment
+cd backend
+vercel
+```
+
+#### **Option 2: Railway**
+- Push backend folder to Railway
+- Automatic Python detection
+
+#### **Option 3: Render**
+- Connect GitHub repository
+- Use backend subfolder
+
+### **Deployment Checklist**
+
+✅ **Frontend Ready**
+- [x] Build process working (`pnpm run build`)
+- [x] Environment variables configured
+- [x] Vercel.json created
+- [x] Static assets optimized
+
+✅ **Backend Ready**
+- [x] CORS configured for production
+- [x] Vercel.json for Python deployment
+- [x] Requirements.txt updated
+- [x] Error handling implemented
+
+⚠️ **Manual Steps Required**
+- [ ] Deploy backend first
+- [ ] Update VITE_API_BASE_URL with backend URL
+- [ ] Test production deployment
+- [ ] Update CORS origins with frontend URL
+
 ## 📁 Project Structure
 
 ```
