@@ -2,6 +2,9 @@
 
 > A modern, feature-rich QR code generator with React frontend and Python FastAPI backend
 
+## Check Live website at - 
+https://linkr-inky-three.vercel.app/
+
 
 ## 🌟 Overview
 
