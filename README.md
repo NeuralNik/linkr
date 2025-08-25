@@ -288,9 +288,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -301,5 +298,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Lucide** for the clean, consistent icons
 
 ---
-
-**Made with ❤️ by Sagnik** | [Live Demo](http://localhost:5173) | [API Docs](http://localhost:8000/docs)
