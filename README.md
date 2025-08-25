@@ -130,6 +130,7 @@ vercel
 #### **Option 2: Railway**
 - Push backend folder to Railway
 - Automatic Python detection
+- deploy backend
 
 #### **Option 3: Render**
 - Connect GitHub repository
