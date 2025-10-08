@@ -2,6 +2,9 @@
 
 > A modern, feature-rich QR code generator with React frontend and Python FastAPI backend
 
+## Check Live website at - 
+https://linkr-inky-three.vercel.app/
+
 
 ## 🌟 Overview
 
@@ -130,6 +133,7 @@ vercel
 #### **Option 2: Railway**
 - Push backend folder to Railway
 - Automatic Python detection
+- deploy backend
 
 #### **Option 3: Render**
 - Connect GitHub repository
@@ -287,9 +291,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -300,5 +301,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Lucide** for the clean, consistent icons
 
 ---
+<<<<<<< HEAD
+=======
 
 **Made with ❤️ by Sagnik** | [Live Demo](http://localhost:5173) | [API Docs](http://localhost:8000/docs)
+>>>>>>> 1105cce7cae2d8e565fcd06f69d2d2fbb742fa02
