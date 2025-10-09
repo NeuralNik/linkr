@@ -18,6 +18,9 @@ export function QRGenerator() {
   const [downloadFormat, setDownloadFormat] = useState("png");
   const [foregroundColor, setForegroundColor] = useState("#000000");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [errorCorrection, setErrorCorrection] = useState("H");
+  const [size, setSize] = useState("medium");
+  const [border, setBorder] = useState(4);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -71,6 +74,9 @@ export function QRGenerator() {
           foreground_color: foregroundColor,
           background_color: backgroundColor,
           format: downloadFormat,
+          error_correction: errorCorrection,
+          size: size,
+          border: border,
         }),
       });
 
@@ -172,6 +178,43 @@ export function QRGenerator() {
                   </Select>
                 </div>
 
+                {/* Error Correction Level */}
+                <div className='space-y-2'>
+                  <Label htmlFor='error-correction' className='text-sm font-medium'>
+                    Error Correction
+                  </Label>
+                  <Select value={errorCorrection} onValueChange={setErrorCorrection}>
+                    <SelectTrigger className='border-border focus:border-neon-green'>
+                      <SelectValue placeholder='Select level' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='L'>Low (L)</SelectItem>
+                      <SelectItem value='M'>Medium (M)</SelectItem>
+                      <SelectItem value='Q'>Quartile (Q)</SelectItem>
+                      <SelectItem value='H'>High (H)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Size */}
+                <div className='space-y-2'>
+                  <Label htmlFor='size' className='text-sm font-medium'>
+                    Size
+                  </Label>
+                  <Select value={size} onValueChange={setSize}>
+                    <SelectTrigger className='border-border focus:border-neon-green'>
+                      <SelectValue placeholder='Select size' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='small'>Small</SelectItem>
+                      <SelectItem value='medium'>Medium</SelectItem>
+                      <SelectItem value='large'>Large</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                 {/* Foreground Color */}
                 <div className='space-y-2'>
                   <Label htmlFor='foreground' className='text-sm font-medium'>
@@ -216,6 +259,25 @@ export function QRGenerator() {
                       placeholder='#ffffff'
                     />
                   </div>
+                </div>
+
+                {/* Border Thickness */}
+                <div className='space-y-2'>
+                  <Label htmlFor='border' className='text-sm font-medium'>
+                    Border Thickness
+                  </Label>
+                  <Select value={border.toString()} onValueChange={(value) => setBorder(parseInt(value))}>
+                    <SelectTrigger className='border-border focus:border-neon-green'>
+                      <SelectValue placeholder='Select thickness' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='1'>Thin (1)</SelectItem>
+                      <SelectItem value='2'>Light (2)</SelectItem>
+                      <SelectItem value='3'>Medium (3)</SelectItem>
+                      <SelectItem value='4'>Thick (4)</SelectItem>
+                      <SelectItem value='5'>Extra Thick (5)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </CardContent>
