@@ -35,10 +35,32 @@ class URLRequest(BaseModel):
     foreground_color: str = "#000000"
     background_color: str = "#ffffff"
     format: str = "png"
+    error_correction: str = "H"
+    size: str = "medium"
+    border: int = 4
 
 class QRResponse(BaseModel):
     qr_code: str  # Base64 encoded PNG
     formatted_url: str
+
+def get_error_correction_level(level: str):
+    """Map string error correction level to qrcode constant"""
+    mapping = {
+        'L': qrcode.constants.ERROR_CORRECT_L,
+        'M': qrcode.constants.ERROR_CORRECT_M,
+        'Q': qrcode.constants.ERROR_CORRECT_Q,
+        'H': qrcode.constants.ERROR_CORRECT_H,
+    }
+    return mapping.get(level.upper(), qrcode.constants.ERROR_CORRECT_H)
+
+def get_box_size(size: str):
+    """Map string size to box_size value"""
+    mapping = {
+        'small': 5,
+        'medium': 10,
+        'large': 15,
+    }
+    return mapping.get(size.lower(), 10)
 
 def validate_and_format_url(url: str) -> str:
     """Validate and format URL, adding https:// if needed"""
@@ -79,9 +101,9 @@ async def generate_qr(request: URLRequest):
         # Create QR code instance
         qr = qrcode.QRCode(
             version=1,  # Controls the size of the QR Code
-            error_correction=qrcode.constants.ERROR_CORRECT_H,  # High error correction
-            box_size=10,  # Size of each box in pixels
-            border=4,  # Border size in boxes
+            error_correction=get_error_correction_level(request.error_correction),  # Error correction level
+            box_size=get_box_size(request.size),  # Size of each box in pixels
+            border=request.border,  # Border size in boxes
         )
         
         # Add data to QR code
@@ -109,9 +131,9 @@ async def generate_qr(request: URLRequest):
             # Create QR code data matrix
             qr_svg = qrcode.QRCode(
                 version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_H,
-                box_size=10,
-                border=4,
+                error_correction=get_error_correction_level(request.error_correction),
+                box_size=get_box_size(request.size),
+                border=request.border,
             )
             qr_svg.add_data(formatted_url)
             qr_svg.make(fit=True)
@@ -120,8 +142,8 @@ async def generate_qr(request: URLRequest):
             matrix = qr_svg.get_matrix()
             
             # Create custom SVG with proper colors
-            box_size = 10
-            border = 4
+            box_size = get_box_size(request.size)
+            border = request.border
             width = height = (len(matrix) + border * 2) * box_size
             
             svg_content = f'''<?xml version="1.0" encoding="UTF-8"?>
