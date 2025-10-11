@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, Request, UploadFile, File, Form, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, HttpUrl
@@ -11,6 +11,11 @@ import os
 import zipfile
 import csv
 import tempfile
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, Session
+from datetime import datetime
+
+from .models.analytics import Base, QRAnalytics, get_top_urls, get_daily_counts, get_avg_response_time
 
 app = FastAPI(title="linkr API", description="QR Code Generation API", version="1.0.0")
 
@@ -32,6 +37,229 @@ async def add_cors_header(request: Request, call_next):
     response.headers["Access-Control-Allow-Headers"] = "*"
     response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
+
+# --- Database setup (SQLite by default) ---
+DB_URL = os.getenv("ANALYTICS_DATABASE_URL", "sqlite:///./analytics.db")
+engine = create_engine(
+    DB_URL,
+    connect_args={"check_same_thread": False} if DB_URL.startswith("sqlite") else {},
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Create tables if not exist
+Base.metadata.create_all(bind=engine)
+
+
+# --- Realtime WebSocket manager ---
+class ConnectionManager:
+    def __init__(self):
+        self.active: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        if websocket in self.active:
+            self.active.remove(websocket)
+
+    async def broadcast(self, message: dict):
+        stale: list[WebSocket] = []
+        for ws in self.active:
+            try:
+                await ws.send_json(message)
+            except Exception:
+                stale.append(ws)
+        for ws in stale:
+            self.disconnect(ws)
+
+
+manager = ConnectionManager()
+
+
+def get_db() -> Session:
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def anonymize_value(val: Optional[str], enabled: bool) -> Optional[str]:
+    if not enabled or not val:
+        return val
+    # simple anonymization: mask string
+    if len(val) <= 3:
+        return "***"
+    return val[:2] + "***" + val[-1]
+
+
+def log_analytics_event(action_type: str, url: Optional[str] = None, qr_id: Optional[str] = None, response_time: Optional[float] = None,
+                        location: Optional[str] = None, device_type: Optional[str] = None):
+    try:
+        db = SessionLocal()
+        ev = QRAnalytics(
+            qr_id=qr_id,
+            url=url,
+            action_type=action_type,
+            timestamp=datetime.utcnow(),
+            location=location,
+            device_type=device_type,
+            response_time=response_time,
+        )
+        db.add(ev)
+        db.commit()
+    except Exception:
+        # avoid breaking primary flow on analytics failure
+        pass
+    finally:
+        try:
+            db.close()
+        except Exception:
+            pass
+
+
+class AnalyticsIngest(BaseModel):
+    qr_id: Optional[str] = None
+    url: Optional[str] = None
+    action_type: str
+    timestamp: Optional[datetime] = None
+    location: Optional[str] = None
+    device_type: Optional[str] = None
+    response_time: Optional[float] = None
+
+
+@app.websocket("/ws/analytics")
+async def ws_analytics(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            # Keep connection alive; server pushes events
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+
+@app.post("/api/analytics/ingest")
+async def ingest_analytics(payload: AnalyticsIngest, request: Request):
+    try:
+        db = SessionLocal()
+        event = QRAnalytics(
+            qr_id=payload.qr_id,
+            url=payload.url,
+            action_type=payload.action_type,
+            timestamp=payload.timestamp or datetime.utcnow(),
+            location=payload.location,
+            device_type=payload.device_type,
+            response_time=payload.response_time,
+        )
+        db.add(event)
+        db.commit()
+        db.refresh(event)
+        await manager.broadcast({"type": "analytics_event", "id": event.id, "action_type": event.action_type})
+        return {"ok": True, "id": event.id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        try:
+            db.close()
+        except Exception:
+            pass
+
+
+@app.get("/api/analytics/stats")
+def analytics_stats(days: int = 30, anonymize: bool = False):
+    db = SessionLocal()
+    try:
+        total = db.query(QRAnalytics).count()
+        scans = db.query(QRAnalytics).filter(QRAnalytics.action_type == "scan").count()
+        generated = db.query(QRAnalytics).filter(QRAnalytics.action_type == "generate").count()
+        top_urls = get_top_urls(db)
+        daily = get_daily_counts(db, days=days)
+        avg_resp = get_avg_response_time(db, days=days)
+        if anonymize:
+            top_urls = [(anonymize_value(u, True), c) for u, c in top_urls]
+        return {
+            "total_events": int(total),
+            "total_scans": int(scans),
+            "total_generated": int(generated),
+            "top_urls": [{"url": u, "count": c} for u, c in top_urls],
+            "daily": daily,
+            "avg_response_time": avg_resp,
+        }
+    finally:
+        db.close()
+
+
+@app.get("/api/analytics/top-urls")
+def api_top_urls(limit: int = 10, anonymize: bool = False):
+    db = SessionLocal()
+    try:
+        items = get_top_urls(db, limit)
+        if anonymize:
+            items = [(anonymize_value(u, True), c) for u, c in items]
+        return [{"url": u, "count": c} for u, c in items]
+    finally:
+        db.close()
+
+
+@app.get("/api/analytics/daily")
+def api_daily(days: int = 30, action: Optional[str] = None):
+    db = SessionLocal()
+    try:
+        return get_daily_counts(db, days=days, action=action)
+    finally:
+        db.close()
+
+
+@app.get("/api/analytics/export")
+def export_analytics(format: str = "json", anonymize: bool = False):
+    db = SessionLocal()
+    try:
+        q = db.query(QRAnalytics).order_by(QRAnalytics.timestamp.desc()).limit(10000)
+        rows = q.all()
+        if format == "json":
+            data = [
+                {
+                    "id": r.id,
+                    "qr_id": anonymize_value(r.qr_id, anonymize),
+                    "url": anonymize_value(r.url, anonymize),
+                    "action_type": r.action_type,
+                    "timestamp": r.timestamp.isoformat(),
+                    "location": anonymize_value(r.location, anonymize),
+                    "device_type": anonymize_value(r.device_type, anonymize),
+                    "response_time": r.response_time,
+                }
+                for r in rows
+            ]
+            return data
+        elif format == "csv":
+            def generate():
+                output = io.StringIO()
+                writer = csv.writer(output)
+                writer.writerow(["id", "qr_id", "url", "action_type", "timestamp", "location", "device_type", "response_time"])
+                yield output.getvalue()
+                output.seek(0)
+                output.truncate(0)
+                for r in rows:
+                    writer.writerow([
+                        r.id,
+                        anonymize_value(r.qr_id, anonymize),
+                        anonymize_value(r.url, anonymize),
+                        r.action_type,
+                        r.timestamp.isoformat(),
+                        anonymize_value(r.location, anonymize),
+                        anonymize_value(r.device_type, anonymize),
+                        r.response_time,
+                    ])
+                    yield output.getvalue()
+                    output.seek(0)
+                    output.truncate(0)
+            return StreamingResponse(generate(), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=analytics.csv"})
+        else:
+            raise HTTPException(status_code=400, detail="Unsupported export format")
+    finally:
+        db.close()
 
 class URLRequest(BaseModel):
     url: str
@@ -248,6 +476,12 @@ async def generate_qr(request: URLRequest):
         # Encode to base64
         img_base64 = base64.b64encode(img_buffer.read()).decode()
         
+        # log analytics
+        try:
+            log_analytics_event("generate", url=formatted_url)
+        except Exception:
+            pass
+
         return QRResponse(
             qr_code=f"data:{mime_type};base64,{img_base64}",
             formatted_url=formatted_url
@@ -303,6 +537,11 @@ async def generate_qr_batch(request: BatchURLRequest):
                     'qr_code': base64.b64encode(img_buffer.getvalue()).decode(),
                     'success': True
                 })
+                # log analytics per successful generation
+                try:
+                    log_analytics_event("generate", url=formatted_url)
+                except Exception:
+                    pass
                 
             except Exception as e:
                 results.append({
