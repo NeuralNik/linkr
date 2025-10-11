@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { ErrorMessage } from "./ErrorMessage";
+import { showNotification } from "@/utils/ShowNotification";
 
 export function QRGenerator() {
   const [url, setUrl] = useState("");
@@ -67,7 +68,11 @@ export function QRGenerator() {
       ]);
       setSuccess(true);
       setIsQRCodeCopiedToClipboard(true);
-      setTimeout(() => setSuccess(false), 3000);
+      showNotification(
+        "QR Code Copied!",
+        "Your QR code has been successfully copied to the clipboard.",
+        "/success-icon.png"
+      );
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
       setError(errorMessage);
