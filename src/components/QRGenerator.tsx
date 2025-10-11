@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { ErrorMessage } from "./ErrorMessage";
+import { throttle } from "@/utils/throttle";
 import { showNotification } from "@/utils/ShowNotification";
 
 export function QRGenerator() {
@@ -66,7 +67,7 @@ export function QRGenerator() {
       await navigator.clipboard.write([
         new ClipboardItem({ [blob.type]: blob }),
       ]);
-      setSuccess(true);
+      
       setIsQRCodeCopiedToClipboard(true);
       showNotification(
         "QR Code Copied!",
@@ -78,6 +79,8 @@ export function QRGenerator() {
       setError(errorMessage);
     }
   }
+
+  const throttledCopyQRCode = throttle(handleCopyQRCodeToClipboard, 5000);
 
   const handleGenerate = async () => {
     if (!url.trim()) {
@@ -354,10 +357,18 @@ export function QRGenerator() {
               <p className='text-xs text-muted-foreground break-all'>{formattedUrl}</p>
             </div>
 
+            {isQRCodeCopiedToClipboard && (
+              <Alert className='border-neon-green/50 bg-neon-green/10'>
+                <CheckCircle className='h-4 w-4 text-neon-green' />
+                <AlertDescription className='text-neon-green'>Copied QR code to clipboard!</AlertDescription>
+              </Alert>
+            )}
+
             <div className="gap-5 flex">
                 <Button 
-                  variant='outline'
-                  onClick={handleCopyQRCodeToClipboard}
+                  variant={isQRCodeCopiedToClipboard ? 'default' : 'outline'}
+                  disabled={isQRCodeCopiedToClipboard}
+                  onClick={throttledCopyQRCode}
                 >
                   {
                     isQRCodeCopiedToClipboard ? (
