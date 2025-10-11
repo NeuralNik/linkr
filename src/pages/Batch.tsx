@@ -93,7 +93,7 @@ export default function Batch() {
     setZipFile("");
 
     try {
-      let response;
+      let response: Response;
 
       if (inputMethod === "manual") {
         setProgress(25);

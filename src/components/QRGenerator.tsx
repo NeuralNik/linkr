@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Palette } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Clipboard, ClipboardCheck, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,7 @@ export function QRGenerator() {
   const [qrCodeImage, setQrCodeImage] = useState("");
   const [formattedUrl, setFormattedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isQRCodeCopiedToClipboard, setIsQRCodeCopiedToClipboard] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [downloadFormat, setDownloadFormat] = useState("png");
@@ -47,6 +48,31 @@ export function QRGenerator() {
       return `https://${inputUrl}`;
     }
   };
+
+  useEffect(() => { // Reset Copy to clip board icon and button text after 10s.
+    if (isQRCodeCopiedToClipboard) {
+      const timer = setTimeout(() => setIsQRCodeCopiedToClipboard(false), 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [isQRCodeCopiedToClipboard]);
+
+  const handleCopyQRCodeToClipboard = async () => {
+    if (!qrCodeImage) return;
+
+    try {
+      const response = await fetch(qrCodeImage);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob }),
+      ]);
+      setSuccess(true);
+      setIsQRCodeCopiedToClipboard(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
+      setError(errorMessage);
+    }
+  }
 
   const handleGenerate = async () => {
     if (!url.trim()) {
@@ -323,14 +349,34 @@ export function QRGenerator() {
               <p className='text-xs text-muted-foreground break-all'>{formattedUrl}</p>
             </div>
 
-            <Button
-              onClick={handleDownload}
-              variant='outline'
-              className='w-full border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground transition-all duration-300'
-            >
-              <Download className='mr-2 h-4 w-4' />
-              Download {downloadFormat.toUpperCase()}
-            </Button>
+            <div className="gap-5 flex">
+                <Button 
+                  variant='outline'
+                  onClick={handleCopyQRCodeToClipboard}
+                >
+                  {
+                    isQRCodeCopiedToClipboard ? (
+                      <>
+                        <ClipboardCheck className='mr-2 h-4 w-4' />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Clipboard className='mr-2 h-4 w-4' />
+                        Copy QR Code
+                      </>
+                    )
+                  }
+                </Button>
+                <Button
+                  onClick={handleDownload}
+                  variant='outline'
+                  className='w-full border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground transition-all duration-300'
+                >
+                  <Download className='mr-2 h-4 w-4' />
+                  Download {downloadFormat.toUpperCase()}
+                </Button>
+              </div>
           </CardContent>
         </Card>
       )}
