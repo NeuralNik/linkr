@@ -15,18 +15,22 @@
 ## ✨ Features
 
 ### 🎨 **Customization Options**
+
 - **Color Selection**: Custom foreground and background colors with color pickers
 - **Multiple Formats**: Download QR codes in PNG, JPG, PDF, or SVG formats
 - **High Quality**: Generate crisp, high-resolution QR codes
 - **Real-time Preview**: See your QR code update instantly
 
 ### 🎯 **User Experience**
+
 - **Dark Theme**: Modern dark UI with neon green highlights
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 - **Fast Generation**: Instant QR code creation with Python backend
+- **Batch Processing**: Generate multiple QR codes at once from CSV or manual input
 - **No Data Storage**: Your URLs are not stored on our servers for privacy
 
 ### 🔧 **Technical Features**
+
 - **React 18** with TypeScript for type safety
 - **Python FastAPI** backend for fast QR generation
 - **Tailwind CSS** with custom design system
@@ -36,6 +40,7 @@
 ## 🛠️ Tech Stack
 
 ### **Frontend**
+
 - **Framework**: React 18 with TypeScript
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS with custom theme
@@ -44,6 +49,7 @@
 - **State Management**: React Hooks
 
 ### **Backend**
+
 - **Framework**: FastAPI (Python)
 - **QR Generation**: qrcode library with PIL
 - **PDF Generation**: ReportLab
@@ -93,6 +99,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 **Backend will be running at:**
+
 - API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
 
@@ -118,6 +125,7 @@ pnpm run dev
 #### 4. Access the Application
 
 Open your browser and navigate to:
+
 - **Frontend:** http://localhost:5173
 - **Backend API Docs:** http://localhost:8000/docs
 
@@ -200,17 +208,20 @@ linkr/
 ## 🎨 Design System
 
 ### **Color Palette**
+
 - **Primary**: Neon Green (`#00ff41`)
 - **Background**: Dark (`#0a0a0a`)
 - **Cards**: Glass effect with borders
 - **Text**: High contrast for accessibility
 
 ### **Typography**
+
 - **Font**: JetBrains Mono for modern, tech aesthetic
 - **Headings**: Bold with gradient effects
 - **Body**: Optimized for readability
 
 ### **Animations**
+
 - **Glow Effects**: Subtle neon glow on interactive elements
 - **Smooth Transitions**: 300ms duration for all interactions
 - **Hover States**: Enhanced feedback for user actions
@@ -283,6 +294,7 @@ Backend (FastAPI + Python)
 **Error:** `ModuleNotFoundError: No module named 'fastapi'`
 
 **Solution:** Make sure virtual environment is activated and dependencies are installed:
+
 ```bash
 cd backend
 source venv/bin/activate  # or venv\Scripts\activate on Windows
@@ -293,7 +305,8 @@ pip install -r requirements.txt
 
 **Error:** Network request failed / CORS error
 
-**Solution:** 
+**Solution:**
+
 1. Ensure backend is running on port 8000
 2. Check backend terminal for any errors
 3. Verify CORS is configured in `backend/main.py`
@@ -303,6 +316,7 @@ pip install -r requirements.txt
 **Error:** `Address already in use`
 
 **Solution:**
+
 ```bash
 # Windows - Find and kill process on port 8000
 netstat -ano | findstr :8000
@@ -315,6 +329,7 @@ lsof -ti:8000 | xargs kill -9
 ### Dependencies installation fails
 
 **Solution:**
+
 ```bash
 # Clear npm cache
 npm cache clean --force
@@ -329,7 +344,7 @@ pnpm install
 
 ## 👨‍💻 Developer
 
-**Sagnik Pal** - *Exploring AI Milestones*
+**Sagnik Pal** - _Exploring AI Milestones_
 
 - 🌐 **GitHub**: [writetosagnik](https://github.com/writetosagnik)
 - 💼 **LinkedIn**: [sagnik-pal-930160277](https://www.linkedin.com/in/sagnik-pal-930160277/)
@@ -339,12 +354,14 @@ pnpm install
 ## 🛣️ Roadmap
 
 ### **v1.2.0 - Planned Features**
+
 - [ ] Batch QR code generation
 - [ ] QR code analytics
 - [ ] Custom logo embedding
 - [ ] More export formats (WebP, TIFF)
 
 ### **v1.3.0 - Future Enhancements**
+
 - [ ] User accounts and history
 - [ ] QR code templates
 - [ ] API rate limiting
@@ -382,7 +399,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🌐 Deployment
 
 Want to deploy your own instance? Check out our [Deployment Guide](DEPLOYMENT_GUIDE.md) for detailed instructions on deploying to Render, Vercel, and other platforms.
-
 
 ## 🙏 Acknowledgments
 

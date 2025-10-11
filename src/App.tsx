@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import Home from "./pages/Home";
+import Batch from "./pages/Batch";
 import Developer from "./pages/Developer";
 import NotFound from "./pages/NotFound";
 
@@ -19,14 +20,15 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="min-h-screen flex flex-col">
+          <div className='min-h-screen flex flex-col'>
             <Header />
-            <div className="flex-1">
+            <div className='flex-1'>
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/developer" element={<Developer />} />
+                <Route path='/' element={<Home />} />
+                <Route path='/batch' element={<Batch />} />
+                <Route path='/developer' element={<Developer />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
+                <Route path='*' element={<NotFound />} />
               </Routes>
             </div>
             <Footer />

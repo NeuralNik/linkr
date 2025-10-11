@@ -1,13 +1,16 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, HttpUrl
 import qrcode
 import io
 import base64
-from typing import Union
+from typing import Union, List, Optional
 import re
 import os
+import zipfile
+import csv
+import tempfile
 
 app = FastAPI(title="linkr API", description="QR Code Generation API", version="1.0.0")
 
@@ -39,9 +42,22 @@ class URLRequest(BaseModel):
     size: str = "medium"
     border: int = 4
 
+class BatchURLRequest(BaseModel):
+    urls: List[str]
+    foreground_color: str = "#000000"
+    background_color: str = "#ffffff"
+    format: str = "png"
+    error_correction: str = "H"
+    size: str = "medium"
+    border: int = 4
+
 class QRResponse(BaseModel):
     qr_code: str  # Base64 encoded PNG
     formatted_url: str
+
+class BatchQRResponse(BaseModel):
+    qr_codes: List[dict]  # List of {url: str, qr_code: str, success: bool, error?: str}
+    zip_file: Optional[str] = None  # Base64 encoded ZIP file
 
 def get_error_correction_level(level: str):
     """Map string error correction level to qrcode constant"""
@@ -241,6 +257,197 @@ async def generate_qr(request: URLRequest):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating QR code: {str(e)}")
+
+@app.post("/generate-qr-batch", response_model=BatchQRResponse)
+async def generate_qr_batch(request: BatchURLRequest):
+    """Generate QR codes for multiple URLs and return as ZIP file"""
+    try:
+        results = []
+        successful_qrs = []
+        
+        for i, url in enumerate(request.urls):
+            try:
+                # Validate and format the URL
+                formatted_url = validate_and_format_url(url)
+                
+                # Create QR code instance
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=get_error_correction_level(request.error_correction),
+                    box_size=get_box_size(request.size),
+                    border=request.border,
+                )
+                
+                # Add data to QR code
+                qr.add_data(formatted_url)
+                qr.make(fit=True)
+                
+                # Create QR code image
+                qr_image = qr.make_image(fill_color=request.foreground_color, back_color=request.background_color)
+                
+                # Convert to bytes
+                img_buffer = io.BytesIO()
+                qr_image.save(img_buffer, format='PNG')
+                img_buffer.seek(0)
+                
+                # Store successful QR code data
+                qr_data = {
+                    'url': formatted_url,
+                    'qr_bytes': img_buffer.getvalue(),
+                    'index': i
+                }
+                successful_qrs.append(qr_data)
+                
+                results.append({
+                    'url': formatted_url,
+                    'qr_code': base64.b64encode(img_buffer.getvalue()).decode(),
+                    'success': True
+                })
+                
+            except Exception as e:
+                results.append({
+                    'url': url,
+                    'success': False,
+                    'error': str(e)
+                })
+        
+        # Create ZIP file if there are successful QR codes
+        zip_base64 = None
+        if successful_qrs:
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                for qr_data in successful_qrs:
+                    # Create filename from URL
+                    url_parts = qr_data['url'].replace('https://', '').replace('http://', '').split('/')
+                    filename = f"{url_parts[0]}_{qr_data['index'] + 1}.png"
+                    # Sanitize filename
+                    filename = re.sub(r'[^\w\-_\.]', '_', filename)
+                    zip_file.writestr(filename, qr_data['qr_bytes'])
+            
+            zip_buffer.seek(0)
+            zip_base64 = base64.b64encode(zip_buffer.read()).decode()
+        
+        return BatchQRResponse(
+            qr_codes=results,
+            zip_file=zip_base64
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating batch QR codes: {str(e)}")
+
+@app.post("/generate-qr-batch-csv")
+async def generate_qr_batch_csv(
+    file: UploadFile = File(...),
+    foreground_color: str = Form("#000000"),
+    background_color: str = Form("#ffffff"),
+    format: str = Form("png"),
+    error_correction: str = Form("H"),
+    size: str = Form("medium"),
+    border: int = Form(4)
+):
+    """Generate QR codes from CSV file and return as ZIP file"""
+    try:
+        # Read CSV file
+        content = await file.read()
+        content_str = content.decode('utf-8')
+        
+        # Parse CSV
+        urls = []
+        csv_reader = csv.reader(io.StringIO(content_str))
+        for row in csv_reader:
+            if row and row[0].strip():  # Skip empty rows
+                urls.append(row[0].strip())
+        
+        if not urls:
+            raise HTTPException(status_code=400, detail="No valid URLs found in CSV file")
+        
+        # Create batch request
+        batch_request = BatchURLRequest(
+            urls=urls,
+            foreground_color=foreground_color,
+            background_color=background_color,
+            format=format,
+            error_correction=error_correction,
+            size=size,
+            border=border
+        )
+        
+        # Generate QR codes
+        results = []
+        successful_qrs = []
+        
+        for i, url in enumerate(batch_request.urls):
+            try:
+                # Validate and format the URL
+                formatted_url = validate_and_format_url(url)
+                
+                # Create QR code instance
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=get_error_correction_level(batch_request.error_correction),
+                    box_size=get_box_size(batch_request.size),
+                    border=batch_request.border,
+                )
+                
+                # Add data to QR code
+                qr.add_data(formatted_url)
+                qr.make(fit=True)
+                
+                # Create QR code image
+                qr_image = qr.make_image(fill_color=batch_request.foreground_color, back_color=batch_request.background_color)
+                
+                # Convert to bytes
+                img_buffer = io.BytesIO()
+                qr_image.save(img_buffer, format='PNG')
+                img_buffer.seek(0)
+                
+                # Store successful QR code data
+                qr_data = {
+                    'url': formatted_url,
+                    'qr_bytes': img_buffer.getvalue(),
+                    'index': i
+                }
+                successful_qrs.append(qr_data)
+                
+                results.append({
+                    'url': formatted_url,
+                    'qr_code': base64.b64encode(img_buffer.getvalue()).decode(),
+                    'success': True
+                })
+                
+            except Exception as e:
+                results.append({
+                    'url': url,
+                    'success': False,
+                    'error': str(e)
+                })
+        
+        # Create ZIP file if there are successful QR codes
+        if successful_qrs:
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                for qr_data in successful_qrs:
+                    # Create filename from URL
+                    url_parts = qr_data['url'].replace('https://', '').replace('http://', '').split('/')
+                    filename = f"{url_parts[0]}_{qr_data['index'] + 1}.png"
+                    # Sanitize filename
+                    filename = re.sub(r'[^\w\-_\.]', '_', filename)
+                    zip_file.writestr(filename, qr_data['qr_bytes'])
+            
+            zip_buffer.seek(0)
+            
+            return StreamingResponse(
+                io.BytesIO(zip_buffer.read()),
+                media_type="application/zip",
+                headers={"Content-Disposition": "attachment; filename=qr_codes_batch.zip"}
+            )
+        else:
+            raise HTTPException(status_code=400, detail="No QR codes could be generated from the provided URLs")
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing CSV file: {str(e)}")
 
 @app.get("/generate-qr-image/{url:path}")
 async def generate_qr_image(url: str):
