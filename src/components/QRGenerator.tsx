@@ -364,7 +364,7 @@ export function QRGenerator() {
               </Alert>
             )}
 
-            <div className="gap-5 flex">
+            <div className="flex-col sm:flex-row flex gap-5">
                 <Button 
                   variant={isQRCodeCopiedToClipboard ? 'default' : 'outline'}
                   disabled={isQRCodeCopiedToClipboard}
