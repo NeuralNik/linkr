@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Batch from "./pages/Batch";
 import Developer from "./pages/Developer";
 import NotFound from "./pages/NotFound";
+import Analytics from "./pages/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
                 <Route path='/' element={<Home />} />
                 <Route path='/batch' element={<Batch />} />
                 <Route path='/developer' element={<Developer />} />
+                <Route path='/analytics' element={<Analytics />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path='*' element={<NotFound />} />
               </Routes>
