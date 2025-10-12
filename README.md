@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://i.postimg.cc/k5yv3JfQ/linkr-banner.png" alt="Linkr Banner" style="max-width:100%;"/>
+</p>
+
 # 🔗 linkr
 
 > A modern, feature-rich QR code generator with React frontend and Python FastAPI backend
