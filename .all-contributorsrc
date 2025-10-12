@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "shresthashim",
+      "name": "AsHim Shrestha",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130267320?v=4",
+      "profile": "http://ashimshrestha.is-a.dev",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "linkr",
+  "projectOwner": "NeuralNik"
+}
