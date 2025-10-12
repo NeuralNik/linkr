@@ -212,26 +212,6 @@ linkr/
 └── README.md              # Project documentation
 ```
 
-## 🎨 Design System
-
-### **Color Palette**
-
-- **Primary**: Neon Green (`#00ff41`)
-- **Background**: Dark (`#0a0a0a`)
-- **Cards**: Glass effect with borders
-- **Text**: High contrast for accessibility
-
-### **Typography**
-
-- **Font**: JetBrains Mono for modern, tech aesthetic
-- **Headings**: Bold with gradient effects
-- **Body**: Optimized for readability
-
-### **Animations**
-
-- **Glow Effects**: Subtle neon glow on interactive elements
-- **Smooth Transitions**: 300ms duration for all interactions
-- **Hover States**: Enhanced feedback for user actions
 
 ## � Available Scripts
 
@@ -358,22 +338,6 @@ pnpm install
 - 📧 **Email**: writeto.uxgnik@gmail.com
 - 💬 **Reddit**: [Comfortable-Web-5719](https://www.reddit.com/user/Comfortable-Web-5719/)
 
-## 🛣️ Roadmap
-
-### **v1.2.0 - Planned Features**
-
-- [ ] Batch QR code generation
-- [ ] QR code analytics
-- [ ] Custom logo embedding
-- [ ] More export formats (WebP, TIFF)
-
-### **v1.3.0 - Future Enhancements**
-
-- [ ] User accounts and history
-- [ ] QR code templates
-- [ ] API rate limiting
-- [ ] Progressive Web App (PWA)
-
 ## 🤝 Contributing
 
 We welcome contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.
@@ -430,20 +394,7 @@ If you find this project helpful, please consider giving it a star on GitHub! It
 
 **Made with ❤️ by [Sagnik Pal](https://github.com/writetosagnik)** | [Live Demo](https://linkr-inky-three.vercel.app/) | [Report Bug](https://github.com/writetosagnik/linkr/issues) | [Request Feature](https://github.com/writetosagnik/linkr/issues)
 
-## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="http://ashimshrestha.is-a.dev"><img src="https://avatars.githubusercontent.com/u/130267320?v=4?s=100" width="100px;" alt="AsHim Shrestha"/><br /><sub><b>AsHim Shrestha</b></sub></a><br /><a href="#infra-shresthashim" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/NeuralNik/linkr/commits?author=shresthashim" title="Tests">⚠️</a> <a href="https://github.com/NeuralNik/linkr/commits?author=shresthashim" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
