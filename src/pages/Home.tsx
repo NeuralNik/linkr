@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { QRGenerator } from "@/components/QRGenerator";
 import linkrLogo from "@/assets/linkr-logo.png";
 import { Link } from "react-router-dom";
+import { QRScanner } from "@/components/QRScanner";
 
 export default function Home() {
   const features = [
@@ -32,6 +33,9 @@ export default function Home() {
   const scrollToGenerator = () => {
     document.getElementById("qr-generator")?.scrollIntoView({ behavior: "smooth" });
   };
+  const scrollToScanner = () => {
+    document.getElementById("qr-scanner")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <main className='min-h-screen'>
@@ -49,13 +53,22 @@ export default function Home() {
               Convert any URL into a scannable QR code in seconds. Fast, free, and secure.
             </p>
 
-            <div className='flex justify-center'>
+            <div className='flex justify-center gap-3 flex-wrap'>
               <Button
                 size='lg'
                 onClick={scrollToGenerator}
                 className='text-lg px-8 py-6 bg-gradient-primary hover:bg-gradient-primary/90 transition-all duration-300 hover:glow-effect group'
               >
                 Get Started
+                <ArrowRight className='ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300' />
+              </Button>
+              <Button
+                variant='outline'
+                size='lg'
+                onClick={scrollToScanner}
+                className='text-lg px-8 py-6 border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground transition-all duration-300 hover:glow-effect group'
+              >
+                Scan QR Code
                 <ArrowRight className='ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300' />
               </Button>
             </div>
@@ -108,6 +121,18 @@ export default function Home() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id='qr-scanner' className='py-20'>
+        <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='text-center space-y-4 mb-16'>
+            <h2 className='text-3xl md:text-4xl font-bold'>
+              Scan an existing <span className='text-neon-green text-glow'>QR Code</span>
+            </h2>
+            <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>Use your device camera to detect QR codes in real-time</p>
+          </div>
+          <QRScanner />
         </div>
       </section>
 
