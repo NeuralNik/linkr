@@ -7,6 +7,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { ErrorMessage } from "./ErrorMessage";
+import { QRTemplateSelector } from "./QRTemplateSelector";
+import { type QRTemplate } from "@/data/qrTemplates";
 import { throttle } from "@/utils/throttle";
 import { showNotification } from "@/utils/ShowNotification";
 
@@ -24,6 +26,7 @@ export function QRGenerator() {
   const [errorCorrection, setErrorCorrection] = useState("H");
   const [size, setSize] = useState("medium");
   const [border, setBorder] = useState(4);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -147,6 +150,19 @@ export function QRGenerator() {
     }
   };
 
+  const handleTemplateSelect = (template: QRTemplate) => {
+    setForegroundColor(template.fg);
+    setBackgroundColor(template.bg);
+    setSelectedTemplate(template.id);
+    
+    // Show notification about template selection
+    showNotification(
+      `${template.name} Template Applied`,
+      `Colors updated to ${template.description.toLowerCase()}`,
+      "/template-icon.png"
+    );
+  };
+
   return (
     <div className='w-full max-w-2xl mx-auto space-y-8'>
       {/* Input Section */}
@@ -183,6 +199,16 @@ export function QRGenerator() {
               <AlertDescription className='text-neon-green'>QR code generated successfully!</AlertDescription>
             </Alert>
           )}
+
+          {/* QR Code Templates */}
+          <QRTemplateSelector
+            selectedTemplate={selectedTemplate}
+            onTemplateSelect={handleTemplateSelect}
+            currentColors={{
+              fg: foregroundColor,
+              bg: backgroundColor
+            }}
+          />
 
           {/* Customization Options */}
           <Card className='border-border/30 bg-card/50'>
