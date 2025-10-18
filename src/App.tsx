@@ -8,6 +8,7 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import Home from "./pages/Home";
 import Batch from "./pages/Batch";
+import Templates from "./pages/Templates";
 import Developer from "./pages/Developer";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +27,7 @@ const App = () => (
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/batch' element={<Batch />} />
+                <Route path='/templates' element={<Templates />} />
                 <Route path='/developer' element={<Developer />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path='*' element={<NotFound />} />

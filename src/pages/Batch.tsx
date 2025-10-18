@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ErrorMessage } from "@/components/ErrorMessage";
+import { QRTemplateSelector } from "@/components/QRTemplateSelector";
+import { type QRTemplate } from "@/data/qrTemplates";
 import { useState } from "react";
 
 interface BatchResult {
@@ -31,6 +33,7 @@ export default function Batch() {
   const [size, setSize] = useState("medium");
   const [border, setBorder] = useState(4);
   const [inputMethod, setInputMethod] = useState<"manual" | "csv">("manual");
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -185,6 +188,12 @@ export default function Batch() {
     }
   };
 
+  const handleTemplateSelect = (template: QRTemplate) => {
+    setForegroundColor(template.fg);
+    setBackgroundColor(template.bg);
+    setSelectedTemplate(template.id);
+  };
+
   const successfulCount = results.filter((r) => r.success).length;
   const failedCount = results.filter((r) => !r.success).length;
 
@@ -263,6 +272,16 @@ export default function Batch() {
               )}
 
               {error && <ErrorMessage error={error} onRetry={handleGenerate} />}
+
+              {/* QR Code Templates */}
+              <QRTemplateSelector
+                selectedTemplate={selectedTemplate}
+                onTemplateSelect={handleTemplateSelect}
+                currentColors={{
+                  fg: foregroundColor,
+                  bg: backgroundColor
+                }}
+              />
 
               {/* Customization Options */}
               <Card className='border-border/30 bg-card/50'>

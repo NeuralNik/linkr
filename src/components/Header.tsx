@@ -12,6 +12,7 @@ export function Header() {
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Batch Generate", href: "/batch" },
+    { name: "Templates", href: "/templates" },
     { name: "Know Developer", href: "/developer" },
   ];
 

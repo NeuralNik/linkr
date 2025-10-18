@@ -16,6 +16,7 @@
 
 ### 🎨 **Customization Options**
 
+- **QR Code Templates**: 15 pre-designed color schemes and styles (Professional, Creative, Nature, Tech, Minimal)
 - **Color Selection**: Custom foreground and background colors with color pickers
 - **Multiple Formats**: Download QR codes in PNG, JPG, PDF, or SVG formats
 - **High Quality**: Generate crisp, high-resolution QR codes

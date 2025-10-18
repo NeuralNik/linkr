@@ -112,7 +112,7 @@ export default function Home() {
       </section>
 
       {/* QR Generator Section */}
-      <section id='qr-generator' className='py-20'>
+      <section id='qr-generator' className='py-20 min-h-screen'>
         <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='text-center space-y-4 mb-16'>
             <h2 className='text-3xl md:text-4xl font-bold'>
