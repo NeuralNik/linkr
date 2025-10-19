@@ -25,6 +25,7 @@
 - **Multiple Formats**: Download QR codes in PNG, JPG, PDF, or SVG formats
 - **High Quality**: Generate crisp, high-resolution QR codes
 - **Real-time Preview**: See your QR code update instantly
+- **QR History**: Automatic saving and management of generated QR codes with search and filter capabilities
 
 ### 🎯 **User Experience**
 
@@ -32,6 +33,7 @@
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 - **Fast Generation**: Instant QR code creation with Python backend
 - **Batch Processing**: Generate multiple QR codes at once from CSV or manual input
+- **QR Code History**: Automatic history tracking with search, filter, and export capabilities
 - **No Data Storage**: Your URLs are not stored on our servers for privacy
 
 ### 🔧 **Technical Features**
@@ -142,9 +144,11 @@ You're all set! Start generating QR codes! 🎉
 2. **Customize Colors** (Optional):
    - Choose foreground color (QR code color)
    - Choose background color
+   - Select from pre-designed templates
 3. **Select Format**: Choose from PNG, JPG, PDF, or SVG
 4. **Generate**: Click "Generate QR Code"
 5. **Download**: Click download button to save your QR code
+6. **History**: Access your previously generated QR codes from the History page
 
 ### Supported URL Formats
 

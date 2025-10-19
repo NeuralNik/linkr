@@ -13,6 +13,7 @@ export function Header() {
     { name: "Home", href: "/" },
     { name: "Batch Generate", href: "/batch" },
     { name: "Templates", href: "/templates" },
+    { name: "History", href: "/history" },
     { name: "Know Developer", href: "/developer" },
   ];
 
