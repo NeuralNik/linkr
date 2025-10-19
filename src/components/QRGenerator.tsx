@@ -11,6 +11,7 @@ import { QRTemplateSelector } from "./QRTemplateSelector";
 import { type QRTemplate } from "@/data/qrTemplates";
 import { throttle } from "@/utils/throttle";
 import { showNotification } from "@/utils/ShowNotification";
+import { saveToHistory } from "@/utils/qrHistory";
 
 export function QRGenerator() {
   const [url, setUrl] = useState("");
@@ -127,6 +128,19 @@ export function QRGenerator() {
       setFormattedUrl(data.formatted_url);
       setIsLoading(false);
       setSuccess(true);
+      
+      // Save to history
+      saveToHistory({
+        url: data.formatted_url || url,
+        foregroundColor,
+        backgroundColor,
+        format: downloadFormat,
+        size,
+        errorCorrection,
+        qrCodeData: data.qr_code,
+        templateName: selectedTemplate || undefined,
+      });
+      
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
