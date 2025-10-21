@@ -169,3 +169,14 @@
     }
   }
 }
+
+/* Smooth color transitions for theme changes */
+html,
+body,
+#__next {
+  transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease;
+}
+
+.hover\:glow-effect:hover {
+  box-shadow: 0 0 10px var(--accent-color);
+}
