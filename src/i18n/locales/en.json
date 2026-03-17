@@ -205,6 +205,26 @@
     "download": "Download",
     "downloadDesc": "Save your artwork as PNG"
   },
+  "history": {
+    "title": "QR Code History",
+    "noCodesYet": "No QR Codes Yet",
+    "noCodesDesc": "Your generated QR codes will appear here for easy access",
+    "generateFirst": "Generate Your First QR Code",
+    "codesGenerated": "{{count}} QR code{{plural}} generated",
+    "export": "Export",
+    "clearAll": "Clear All",
+    "search": "Search by URL or template name...",
+    "sort": "Sort By",
+    "sortNewest": "Newest First",
+    "sortOldest": "Oldest First",
+    "sortURL": "URL (A-Z)",
+    "copied": "URL copied!",
+    "download": "Download",
+    "regenerate": "Regenerate",
+    "delete": "Delete",
+    "noResults": "No results found",
+    "clearConfirm": "Are you sure? This action cannot be undone."
+  },
   "developer": {
     "greeting": "Hey, I'm",
     "name": "Sagnik",
@@ -252,7 +272,8 @@
     "settings": "Settings",
     "help": "Help",
     "about": "About",
-    "version": "Version"
+    "version": "Version",
+    "generated": "generated"
   },
   "language": {
     "select": "Select Language",
