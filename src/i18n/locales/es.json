@@ -78,7 +78,20 @@
     "error": "Error al generar código QR",
     "invalidURL": "Por favor, ingrese una URL válida",
     "border": "Tamaño del Borde",
-    "presets": "Presets de Color"
+    "presets": "Presets de Color",
+    "qrSuccess": "¡Código QR generado exitosamente!",
+    "customizationOptions": "Opciones de Personalización",
+    "qrCodeTitle": "Tu Código QR",
+    "scanInstructions": "Escanea con la cámara de tu teléfono",
+    "clipboardCopied": "¡Código QR copiado al portapapeles!",
+    "copiedBtn": "¡Copiado!",
+    "logoEmbedInfo": "El logo será incluido en el centro de tu código QR (25% del tamaño) para mantener la capacidad de escaneo.",
+    "processing": "Generando...",
+    "borderThin": "Delgado (1)",
+    "borderLight": "Ligero (2)",
+    "borderMedium": "Medio (3)",
+    "borderThick": "Grueso (4)",
+    "borderExtraThick": "Muy Grueso (5)"
   },
   "templates": {
     "title": "Plantillas QR",

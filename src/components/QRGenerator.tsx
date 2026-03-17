@@ -262,7 +262,7 @@ export function QRGenerator() {
           {success && (
             <Alert className='border-neon-green/50 bg-neon-green/10'>
               <CheckCircle className='h-4 w-4 text-neon-green' />
-              <AlertDescription className='text-neon-green'>QR code generated successfully!</AlertDescription>
+              <AlertDescription className='text-neon-green'>{t('home.qrSuccess')}</AlertDescription>
             </Alert>
           )}
 
@@ -281,13 +281,13 @@ export function QRGenerator() {
             <CardHeader>
               <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
                 <ImageIcon className='h-4 w-4' />
-                Logo for QR Code (Optional)
+                {t('home.logoUpload')}
               </CardTitle>
             </CardHeader>
             <CardContent className='space-y-4'>
               <div className='space-y-2'>
                 <Label htmlFor='logo-upload' className='text-sm font-medium'>
-                  Upload Logo (PNG, JPG, SVG - Max 2MB)
+                  {t('home.logoInfo')}
                 </Label>
                 <div className='flex items-center gap-2'>
                   <Input
@@ -318,7 +318,7 @@ export function QRGenerator() {
 
               {logoPreview && (
                 <div className='space-y-2'>
-                  <p className='text-sm text-muted-foreground'>Logo Preview:</p>
+                  <p className='text-sm text-muted-foreground'>{t('home.logoPreview')}:</p>
                   <div className='border border-border/50 rounded-lg p-3 flex justify-center bg-white'>
                     <img
                       src={logoPreview}
@@ -327,7 +327,7 @@ export function QRGenerator() {
                     />
                   </div>
                   <p className='text-xs text-muted-foreground'>
-                    The logo will be embedded in the center of your QR code (25% of size) to maintain scannability.
+                    {t('home.logoEmbedInfo')}
                   </p>
                 </div>
               )}
@@ -337,7 +337,7 @@ export function QRGenerator() {
             <CardHeader>
               <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
                 <Palette className='h-4 w-4' />
-                Customization Options
+                {t('home.customizationOptions')}
               </CardTitle>
             </CardHeader>
             <CardContent className='space-y-4'>
@@ -345,7 +345,7 @@ export function QRGenerator() {
                 {/* Download Format */}
                 <div className='space-y-2'>
                   <Label htmlFor='format' className='text-sm font-medium'>
-                    Download Format
+                    {t('home.formatLabel')}
                   </Label>
                   <Select value={downloadFormat} onValueChange={setDownloadFormat}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
@@ -381,16 +381,16 @@ export function QRGenerator() {
                 {/* Size */}
                 <div className='space-y-2'>
                   <Label htmlFor='size' className='text-sm font-medium'>
-                    Size
+                    {t('home.qrSize')}
                   </Label>
                   <Select value={size} onValueChange={setSize}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select size' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='small'>Small</SelectItem>
-                      <SelectItem value='medium'>Medium</SelectItem>
-                      <SelectItem value='large'>Large</SelectItem>
+                      <SelectItem value='small'>{t('home.qrSizeSmall')}</SelectItem>
+                      <SelectItem value='medium'>{t('home.qrSizeMedium')}</SelectItem>
+                      <SelectItem value='large'>{t('home.qrSizeLarge')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -400,7 +400,7 @@ export function QRGenerator() {
                 {/* Foreground Color */}
                 <div className='space-y-2'>
                   <Label htmlFor='foreground' className='text-sm font-medium'>
-                    QR Code Color
+                    {t('home.foregroundColor')}
                   </Label>
                   <div className='flex gap-2'>
                     <input
@@ -423,7 +423,7 @@ export function QRGenerator() {
                 {/* Background Color */}
                 <div className='space-y-2'>
                   <Label htmlFor='background' className='text-sm font-medium'>
-                    Background Color
+                    {t('home.backgroundColor')}
                   </Label>
                   <div className='flex gap-2'>
                     <input
@@ -446,18 +446,18 @@ export function QRGenerator() {
                 {/* Border Thickness */}
                 <div className='space-y-2'>
                   <Label htmlFor='border' className='text-sm font-medium'>
-                    Border Thickness
+                    {t('home.border')}
                   </Label>
                   <Select value={border.toString()} onValueChange={(value) => setBorder(parseInt(value))}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select thickness' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='1'>Thin (1)</SelectItem>
-                      <SelectItem value='2'>Light (2)</SelectItem>
-                      <SelectItem value='3'>Medium (3)</SelectItem>
-                      <SelectItem value='4'>Thick (4)</SelectItem>
-                      <SelectItem value='5'>Extra Thick (5)</SelectItem>
+                      <SelectItem value='1'>{t('home.borderThin')}</SelectItem>
+                      <SelectItem value='2'>{t('home.borderLight')}</SelectItem>
+                      <SelectItem value='3'>{t('home.borderMedium')}</SelectItem>
+                      <SelectItem value='4'>{t('home.borderThick')}</SelectItem>
+                      <SelectItem value='5'>{t('home.borderExtraThick')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -473,10 +473,10 @@ export function QRGenerator() {
             {isLoading ? (
               <>
                 <Loader2 className='mr-2 h-5 w-5 animate-spin' />
-                Generating...
+                {t('home.processing')}
               </>
             ) : (
-              "Generate QR Code"
+              t('home.generateBtn')
             )}
           </Button>
         </CardContent>
@@ -486,7 +486,7 @@ export function QRGenerator() {
       {qrCodeImage && (
         <Card className='glass-effect border-border/50 hover:border-neon-green/50 transition-all duration-300 animate-fade-in'>
           <CardHeader>
-            <CardTitle className='text-center text-neon-green'>Your QR Code</CardTitle>
+            <CardTitle className='text-center text-neon-green'>{t('home.qrCodeTitle')}</CardTitle>
           </CardHeader>
           <CardContent className='space-y-6'>
             <div className='flex justify-center'>
@@ -501,14 +501,14 @@ export function QRGenerator() {
             </div>
 
             <div className='text-center space-y-2'>
-              <p className='text-sm text-muted-foreground'>Scan with your phone camera</p>
+              <p className='text-sm text-muted-foreground'>{t('home.scanInstructions')}</p>
               <p className='text-xs text-muted-foreground break-all'>{formattedUrl}</p>
             </div>
 
             {isQRCodeCopiedToClipboard && (
               <Alert className='border-neon-green/50 bg-neon-green/10'>
                 <CheckCircle className='h-4 w-4 text-neon-green' />
-                <AlertDescription className='text-neon-green'>Copied QR code to clipboard!</AlertDescription>
+                <AlertDescription className='text-neon-green'>{t('home.clipboardCopied')}</AlertDescription>
               </Alert>
             )}
 
@@ -522,12 +522,12 @@ export function QRGenerator() {
                     isQRCodeCopiedToClipboard ? (
                       <>
                         <ClipboardCheck className='mr-2 h-4 w-4' />
-                        Copied!
+                        {t('home.copiedBtn')}
                       </>
                     ) : (
                       <>
                         <Clipboard className='mr-2 h-4 w-4' />
-                        Copy QR Code
+                        {t('home.copyQR')}
                       </>
                     )
                   }
@@ -538,7 +538,7 @@ export function QRGenerator() {
                   className='w-full border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground transition-all duration-300'
                 >
                   <Download className='mr-2 h-4 w-4' />
-                  Download {downloadFormat.toUpperCase()}
+                  {t('home.downloadQR')} {downloadFormat.toUpperCase()}
                 </Button>
               </div>
           </CardContent>

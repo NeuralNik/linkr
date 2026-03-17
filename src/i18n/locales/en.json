@@ -78,7 +78,20 @@
     "error": "Error generating QR code",
     "invalidURL": "Please enter a valid URL",
     "border": "Border Size",
-    "presets": "Color Presets"
+    "presets": "Color Presets",
+    "qrSuccess": "QR code generated successfully!",
+    "customizationOptions": "Customization Options",
+    "qrCodeTitle": "Your QR Code",
+    "scanInstructions": "Scan with your phone camera",
+    "clipboardCopied": "Copied QR code to clipboard!",
+    "copiedBtn": "Copied!",
+    "logoEmbedInfo": "The logo will be embedded in the center of your QR code (25% of size) to maintain scannability.",
+    "processing": "Generating...",
+    "borderThin": "Thin (1)",
+    "borderLight": "Light (2)",
+    "borderMedium": "Medium (3)",
+    "borderThick": "Thick (4)",
+    "borderExtraThick": "Extra Thick (5)"
   },
   "templates": {
     "title": "QR Templates",
