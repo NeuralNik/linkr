@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Clipboard, ClipboardCheck, Palette } from "lucide-react";
+import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Clipboard, ClipboardCheck, Palette, X, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +28,11 @@ export function QRGenerator() {
   const [size, setSize] = useState("medium");
   const [border, setBorder] = useState(4);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  
+  // Logo state
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState("");
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -53,6 +58,48 @@ export function QRGenerator() {
     } catch {
       return `https://${inputUrl}`;
     }
+  };
+
+  const handleLogoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLogoError("");
+    const file = e.target.files?.[0];
+    
+    if (!file) return;
+    
+    // Validate file size (2MB max)
+    const MAX_SIZE = 2 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      setLogoError("Logo file size must be less than 2MB");
+      return;
+    }
+    
+    // Validate file type
+    const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setLogoError("Unsupported file format. Use PNG, JPG, or SVG");
+      return;
+    }
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const preview = e.target?.result as string;
+      setLogoPreview(preview);
+    };
+    reader.readAsDataURL(file);
+    
+    setLogoFile(file);
+    showNotification(
+      "Logo Selected!",
+      `${file.name} is ready to be embedded in your QR code`,
+      "/success-icon.png"
+    );
+  };
+
+  const handleRemoveLogo = () => {
+    setLogoFile(null);
+    setLogoPreview(null);
+    setLogoError("");
   };
 
   useEffect(() => { // Reset Copy to clip board icon and button text after 10s.
@@ -102,20 +149,23 @@ export function QRGenerator() {
     setSuccess(false);
 
     try {
+      const formData = new FormData();
+      formData.append("url", url);
+      formData.append("foreground_color", foregroundColor);
+      formData.append("background_color", backgroundColor);
+      formData.append("format", downloadFormat);
+      formData.append("error_correction", errorCorrection);
+      formData.append("size", size);
+      formData.append("border", border.toString());
+      
+      // Add logo if selected
+      if (logoFile) {
+        formData.append("logo", logoFile);
+      }
+
       const response = await fetch(`${API_BASE_URL}/generate-qr`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          url,
-          foreground_color: foregroundColor,
-          background_color: backgroundColor,
-          format: downloadFormat,
-          error_correction: errorCorrection,
-          size: size,
-          border: border,
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -224,7 +274,63 @@ export function QRGenerator() {
             }}
           />
 
-          {/* Customization Options */}
+          {/* Logo Upload Section */}
+          <Card className='border-border/30 bg-card/50'>
+            <CardHeader>
+              <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
+                <ImageIcon className='h-4 w-4' />
+                Logo for QR Code (Optional)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='logo-upload' className='text-sm font-medium'>
+                  Upload Logo (PNG, JPG, SVG - Max 2MB)
+                </Label>
+                <div className='flex items-center gap-2'>
+                  <Input
+                    id='logo-upload'
+                    type='file'
+                    accept='image/png,image/jpeg,image/jpg,image/svg+xml'
+                    onChange={handleLogoSelect}
+                    className='cursor-pointer'
+                  />
+                  {logoFile && (
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={handleRemoveLogo}
+                      className='text-red-500 hover:text-red-700'
+                    >
+                      <X className='h-4 w-4' />
+                    </Button>
+                  )}
+                </div>
+                {logoError && (
+                  <Alert className='border-red-500/50 bg-red-500/10'>
+                    <AlertCircle className='h-4 w-4 text-red-500' />
+                    <AlertDescription className='text-red-500'>{logoError}</AlertDescription>
+                  </Alert>
+                )}
+              </div>
+
+              {logoPreview && (
+                <div className='space-y-2'>
+                  <p className='text-sm text-muted-foreground'>Logo Preview:</p>
+                  <div className='border border-border/50 rounded-lg p-3 flex justify-center bg-white'>
+                    <img
+                      src={logoPreview}
+                      alt='Logo Preview'
+                      className='max-h-24 max-w-24 object-contain'
+                    />
+                  </div>
+                  <p className='text-xs text-muted-foreground'>
+                    The logo will be embedded in the center of your QR code (25% of size) to maintain scannability.
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
           <Card className='border-border/30 bg-card/50'>
             <CardHeader>
               <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
