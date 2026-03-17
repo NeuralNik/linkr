@@ -1,0 +1,195 @@
+{
+  "app": {
+    "title": "linkr - QR Code Generator",
+    "description": "Create beautiful QR codes with custom logos and themes"
+  },
+  "nav": {
+    "home": "Home",
+    "templates": "Templates",
+    "batch": "Batch",
+    "history": "History",
+    "draw": "Draw",
+    "developer": "Developer"
+  },
+  "hero": {
+    "title": "Generate QR Codes Instantly",
+    "subtitle": "Convert any URL into a scannable QR code in seconds. Fast, free, and secure.",
+    "cta": "Create QR Code",
+    "ctaSecondary": "Learn More"
+  },
+  "features": {
+    "fast": {
+      "title": "Lightning Fast",
+      "description": "Generate QR codes instantly with our optimized algorithm."
+    },
+    "secure": {
+      "title": "Secure & Private",
+      "description": "Your data stays safe. No URLs are stored on our servers."
+    },
+    "formats": {
+      "title": "Multiple Formats",
+      "description": "Download your QR codes in PNG, JPG, PDF, or SVG format."
+    },
+    "mobile": {
+      "title": "Mobile Ready",
+      "description": "Scan with any smartphone camera or QR code reader app."
+    },
+    "custom": {
+      "title": "Highly Customizable",
+      "description": "Choose colors, sizes, and add your own logo to QR codes."
+    },
+    "batch": {
+      "title": "Batch Processing",
+      "description": "Generate multiple QR codes at once and download as ZIP."
+    }
+  },
+  "home": {
+    "title": "Generate QR Codes",
+    "subtitle": "Create professional QR codes with custom designs",
+    "urlLabel": "Enter URL",
+    "urlPlaceholder": "https://example.com",
+    "generateBtn": "Generate QR Code",
+    "colorTheme": "Color Theme",
+    "foregroundColor": "Foreground Color",
+    "backgroundColor": "Background Color",
+    "qrSize": "QR Size",
+    "qrSizeSmall": "Small",
+    "qrSizeMedium": "Medium",
+    "qrSizeLarge": "Large",
+    "errorCorrection": "Error Correction Level",
+    "errorCorrectionL": "L (7%)",
+    "errorCorrectionM": "M (15%)",
+    "errorCorrectionQ": "Q (25%)",
+    "errorCorrectionH": "H (30%)",
+    "formatLabel": "Export Format",
+    "formatPNG": "PNG",
+    "formatJPG": "JPG",
+    "formatSVG": "SVG",
+    "formatPDF": "PDF",
+    "logoUpload": "Upload Logo (Optional)",
+    "logoInfo": "Upload a logo to embed in your QR code (PNG, JPG, SVG - Max 2MB)",
+    "selectLogo": "Select Logo",
+    "removeLogo": "Remove Logo",
+    "logoPreview": "Logo Preview",
+    "logoError": "Invalid logo file",
+    "downloadQR": "Download QR Code",
+    "copyQR": "Copy QR Code",
+    "copied": "Copied to clipboard!",
+    "error": "Error generating QR code",
+    "invalidURL": "Please enter a valid URL",
+    "border": "Border Size",
+    "presets": "Color Presets"
+  },
+  "templates": {
+    "title": "QR Templates",
+    "subtitle": "Choose from pre-designed QR code templates",
+    "selectTemplate": "Select Template",
+    "customizeTemplate": "Customize Template",
+    "previewTemplate": "Preview",
+    "noTemplates": "No templates available",
+    "apply": "Apply Template"
+  },
+  "batch": {
+    "title": "Batch Generate",
+    "subtitle": "Generate multiple QR codes at once",
+    "uploadCSV": "Upload CSV File",
+    "csvFormat": "CSV Format: One URL per line",
+    "generate": "Generate All",
+    "downloadZip": "Download as ZIP",
+    "bulkProcessing": "Processing {{count}} URLs...",
+    "selectFile": "Select CSV File",
+    "noFile": "No file selected",
+    "processing": "Processing...",
+    "complete": "Complete",
+    "urlsProcessed": "{{count}} URLs processed",
+    "downloadAll": "Download All"
+  },
+  "history": {
+    "title": "QR Code History",
+    "subtitle": "Your recently generated QR codes",
+    "noHistory": "No history yet",
+    "clearHistory": "Clear History",
+    "generatedOn": "Generated on {{date}}",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this?",
+    "viewDetails": "View Details",
+    "regenerate": "Regenerate",
+    "export": "Export"
+  },
+  "draw": {
+    "title": "Draw QR Code",
+    "subtitle": "Create QR codes by drawing",
+    "clearCanvas": "Clear Canvas",
+    "generateFromDrawing": "Generate QR Code",
+    "drawing": "Drawing Mode",
+    "uploadImage": "Or upload an image"
+  },
+  "developer": {
+    "title": "Know Developer",
+    "subtitle": "Meet the developer behind linkr",
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact",
+    "followMe": "Follow Me"
+  },
+  "footer": {
+    "copyright": "© {{year}} linkr. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact Us",
+    "quickLinks": "Quick Links",
+    "connect": "Connect",
+    "madeWith": "Made with love by Sagnik"
+  },
+  "common": {
+    "loading": "Loading...",
+    "success": "Success!",
+    "error": "Error",
+    "retry": "Retry",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "done": "Done",
+    "download": "Download",
+    "upload": "Upload",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "settings": "Settings",
+    "help": "Help",
+    "about": "About",
+    "version": "Version"
+  },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "spanish": "Español"
+  },
+  "errors": {
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundMsg": "The page you're looking for doesn't exist.",
+    "goHome": "Go Home",
+    "somethingWrong": "Something went wrong",
+    "tryAgain": "Try Again"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email",
+    "invalidUrl": "Please enter a valid URL",
+    "tooLong": "This field is too long",
+    "tooShort": "This field is too short"
+  },
+  "notifications": {
+    "success": "Operation completed successfully",
+    "error": "An error occurred",
+    "warning": "Warning",
+    "info": "Information"
+  }
+}

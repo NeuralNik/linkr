@@ -1,0 +1,195 @@
+{
+  "app": {
+    "title": "linkr - Generador de Códigos QR",
+    "description": "Crea hermosos códigos QR con logos personalizados y temas"
+  },
+  "nav": {
+    "home": "Inicio",
+    "templates": "Plantillas",
+    "batch": "Lote",
+    "history": "Historial",
+    "draw": "Dibujar",
+    "developer": "Desarrollador"
+  },
+  "hero": {
+    "title": "Genera Códigos QR Instantáneamente",
+    "subtitle": "Convierte cualquier URL en un código QR escaneable en segundos. Rápido, gratuito y seguro.",
+    "cta": "Crear Código QR",
+    "ctaSecondary": "Más Información"
+  },
+  "features": {
+    "fast": {
+      "title": "Ultrarrápido",
+      "description": "Genera códigos QR instantáneamente con nuestro algoritmo optimizado."
+    },
+    "secure": {
+      "title": "Seguro y Privado",
+      "description": "Tus datos están seguros. No almacenamos URLs en nuestros servidores."
+    },
+    "formats": {
+      "title": "Múltiples Formatos",
+      "description": "Descarga tus códigos QR en formato PNG, JPG, PDF o SVG."
+    },
+    "mobile": {
+      "title": "Listo para Móvil",
+      "description": "Escanea con cualquier cámara de smartphone o aplicación de código QR."
+    },
+    "custom": {
+      "title": "Altamente Personalizable",
+      "description": "Elige colores, tamaños y añade tu propio logo a los códigos QR."
+    },
+    "batch": {
+      "title": "Procesamiento por Lotes",
+      "description": "Genera múltiples códigos QR a la vez y descárgalos en ZIP."
+    }
+  },
+  "home": {
+    "title": "Generar Códigos QR",
+    "subtitle": "Crea códigos QR profesionales con diseños personalizados",
+    "urlLabel": "Ingrese URL",
+    "urlPlaceholder": "https://ejemplo.com",
+    "generateBtn": "Generar Código QR",
+    "colorTheme": "Tema de Color",
+    "foregroundColor": "Color de Primer Plano",
+    "backgroundColor": "Color de Fondo",
+    "qrSize": "Tamaño QR",
+    "qrSizeSmall": "Pequeño",
+    "qrSizeMedium": "Medio",
+    "qrSizeLarge": "Grande",
+    "errorCorrection": "Nivel de Corrección de Errores",
+    "errorCorrectionL": "L (7%)",
+    "errorCorrectionM": "M (15%)",
+    "errorCorrectionQ": "Q (25%)",
+    "errorCorrectionH": "H (30%)",
+    "formatLabel": "Formato de Exportación",
+    "formatPNG": "PNG",
+    "formatJPG": "JPG",
+    "formatSVG": "SVG",
+    "formatPDF": "PDF",
+    "logoUpload": "Subir Logo (Opcional)",
+    "logoInfo": "Sube un logo para incluir en tu código QR (PNG, JPG, SVG - Máx 2MB)",
+    "selectLogo": "Seleccionar Logo",
+    "removeLogo": "Eliminar Logo",
+    "logoPreview": "Vista Previa del Logo",
+    "logoError": "Archivo de logo inválido",
+    "downloadQR": "Descargar Código QR",
+    "copyQR": "Copiar Código QR",
+    "copied": "¡Copiado al portapapeles!",
+    "error": "Error al generar código QR",
+    "invalidURL": "Por favor, ingrese una URL válida",
+    "border": "Tamaño del Borde",
+    "presets": "Presets de Color"
+  },
+  "templates": {
+    "title": "Plantillas QR",
+    "subtitle": "Elige entre plantillas de códigos QR prediseñadas",
+    "selectTemplate": "Seleccionar Plantilla",
+    "customizeTemplate": "Personalizar Plantilla",
+    "previewTemplate": "Vista Previa",
+    "noTemplates": "No hay plantillas disponibles",
+    "apply": "Aplicar Plantilla"
+  },
+  "batch": {
+    "title": "Generar por Lote",
+    "subtitle": "Genera múltiples códigos QR a la vez",
+    "uploadCSV": "Subir Archivo CSV",
+    "csvFormat": "Formato CSV: Una URL por línea",
+    "generate": "Generar Todo",
+    "downloadZip": "Descargar como ZIP",
+    "bulkProcessing": "Procesando {{count}} URLs...",
+    "selectFile": "Seleccionar Archivo CSV",
+    "noFile": "Sin archivo seleccionado",
+    "processing": "Procesando...",
+    "complete": "Completado",
+    "urlsProcessed": "{{count}} URLs procesadas",
+    "downloadAll": "Descargar Todo"
+  },
+  "history": {
+    "title": "Historial de Códigos QR",
+    "subtitle": "Tus códigos QR generados recientemente",
+    "noHistory": "Sin historial aún",
+    "clearHistory": "Limpiar Historial",
+    "generatedOn": "Generado el {{date}}",
+    "delete": "Eliminar",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar esto?",
+    "viewDetails": "Ver Detalles",
+    "regenerate": "Regenerar",
+    "export": "Exportar"
+  },
+  "draw": {
+    "title": "Dibujar Código QR",
+    "subtitle": "Crea códigos QR dibujando",
+    "clearCanvas": "Limpiar Lienzo",
+    "generateFromDrawing": "Generar Código QR",
+    "drawing": "Modo Dibujo",
+    "uploadImage": "O sube una imagen"
+  },
+  "developer": {
+    "title": "Conocer al Desarrollador",
+    "subtitle": "Conoce al desarrollador detrás de linkr",
+    "about": "Acerca de",
+    "skills": "Habilidades",
+    "projects": "Proyectos",
+    "contact": "Contacto",
+    "followMe": "Sígueme"
+  },
+  "footer": {
+    "copyright": "© {{year}} linkr. Todos los derechos reservados.",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "contact": "Contactanos",
+    "quickLinks": "Enlaces Rápidos",
+    "connect": "Conectar",
+    "madeWith": "Hecho con amor por Sagnik"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "success": "¡Éxito!",
+    "error": "Error",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "done": "Hecho",
+    "download": "Descargar",
+    "upload": "Subir",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "version": "Versión"
+  },
+  "language": {
+    "select": "Seleccionar Idioma",
+    "english": "English",
+    "spanish": "Español"
+  },
+  "errors": {
+    "pageNotFound": "Página No Encontrada",
+    "pageNotFoundMsg": "La página que buscas no existe.",
+    "goHome": "Ir a Inicio",
+    "somethingWrong": "Algo salió mal",
+    "tryAgain": "Intentar de Nuevo"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Por favor ingresa un email válido",
+    "invalidUrl": "Por favor ingresa una URL válida",
+    "tooLong": "Este campo es muy largo",
+    "tooShort": "Este campo es muy corto"
+  },
+  "notifications": {
+    "success": "Operación completada exitosamente",
+    "error": "Ocurrió un error",
+    "warning": "Advertencia",
+    "info": "Información"
+  }
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Clipboard, ClipboardCheck, Palette, X, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ import { showNotification } from "@/utils/ShowNotification";
 import { saveToHistory } from "@/utils/qrHistory";
 
 export function QRGenerator() {
+  const { t } = useTranslation();
   const [url, setUrl] = useState("");
   const [qrCodeImage, setQrCodeImage] = useState("");
   const [formattedUrl, setFormattedUrl] = useState("");
@@ -69,14 +71,14 @@ export function QRGenerator() {
     // Validate file size (2MB max)
     const MAX_SIZE = 2 * 1024 * 1024;
     if (file.size > MAX_SIZE) {
-      setLogoError("Logo file size must be less than 2MB");
+      setLogoError(t("home.logoError"));
       return;
     }
     
     // Validate file type
     const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setLogoError("Unsupported file format. Use PNG, JPG, or SVG");
+      setLogoError(t("home.logoError"));
       return;
     }
     
@@ -90,8 +92,8 @@ export function QRGenerator() {
     
     setLogoFile(file);
     showNotification(
-      "Logo Selected!",
-      `${file.name} is ready to be embedded in your QR code`,
+      t("home.generateBtn"),
+      `${file.name} ${t("home.selectLogo")}`,
       "/success-icon.png"
     );
   };
@@ -135,12 +137,12 @@ export function QRGenerator() {
 
   const handleGenerate = async () => {
     if (!url.trim()) {
-      setError("Please enter a URL to generate a QR code.");
+      setError(t("home.invalidURL"));
       return;
     }
 
     if (!validateUrl(url)) {
-      setError("Please enter a valid URL. The URL format is incorrect.");
+      setError(t("home.invalidURL"));
       return;
     }
 
@@ -170,7 +172,7 @@ export function QRGenerator() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || "Failed to generate QR code due to a server error.");
+        throw new Error(errorData.detail || t("home.error"));
       }
 
       const data = await response.json();
@@ -193,7 +195,7 @@ export function QRGenerator() {
       
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
+      const errorMessage = err instanceof Error ? err.message : t("home.error");
       setError(errorMessage);
       setIsLoading(false);
     }
