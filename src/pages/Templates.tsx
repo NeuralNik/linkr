@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { qrTemplates, templateCategories } from '@/data/qrTemplates';
@@ -6,6 +7,8 @@ import { TemplatePreview } from '@/components/TemplatePreview';
 import { Palette, Sparkles } from 'lucide-react';
 
 export default function Templates() {
+  const { t } = useTranslation();
+  
   const getCategoryColor = (category: string) => {
     const colors = {
       business: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -34,10 +37,10 @@ export default function Templates() {
         {/* Header */}
         <div className="text-center space-y-4 mb-16 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-            QR Code <span className="text-neon-green">Templates</span>
+            {t('templates.titleStart')} <span className="text-neon-green">{t('templates.titleEnd')}</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-            Choose from 15 carefully designed templates to match your brand and style
+            {t('templates.subtitle')}
           </p>
         </div>
 
@@ -56,13 +59,13 @@ export default function Templates() {
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-2xl">{getCategoryIcon(category.value)}</div>
                   <h2 className="text-2xl md:text-3xl font-bold capitalize">
-                    {category.label}
+                    {t(`templates.category_${category.value}`)}
                   </h2>
                   <Badge 
                     variant="secondary" 
                     className={`${getCategoryColor(category.value)}`}
                   >
-                    {categoryTemplates.length} templates
+                    {categoryTemplates.length} {t('templates.templates')}
                   </Badge>
                 </div>
 
@@ -127,11 +130,11 @@ export default function Templates() {
                         {/* Usage Suggestion */}
                         <div className="pt-2 border-t border-border">
                           <p className="text-xs text-muted-foreground">
-                            {category.value === 'business' && 'Perfect for corporate presentations and professional documents'}
-                            {category.value === 'creative' && 'Great for artistic projects and creative campaigns'}
-                            {category.value === 'nature' && 'Ideal for eco-friendly and outdoor brands'}
-                            {category.value === 'tech' && 'Suitable for technology and gaming applications'}
-                            {category.value === 'minimal' && 'Clean and simple for any use case'}
+                            {category.value === 'business' && t('templates.usageBusiness')}
+                            {category.value === 'creative' && t('templates.usageCreative')}
+                            {category.value === 'nature' && t('templates.usageNature')}
+                            {category.value === 'tech' && t('templates.usageTech')}
+                            {category.value === 'minimal' && t('templates.usageMinimal')}
                           </p>
                         </div>
                       </CardContent>
@@ -149,12 +152,11 @@ export default function Templates() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Sparkles className="h-5 w-5 text-neon-green" />
-                <span className="text-lg font-semibold">Ready to create?</span>
+                <span className="text-lg font-semibold">{t('templates.readyToCreate')}</span>
                 <Sparkles className="h-5 w-5 text-neon-green" />
               </div>
               <p className="text-muted-foreground mb-6">
-                Use these templates in our QR code generator to create beautiful, 
-                professional QR codes in seconds.
+                {t('templates.ctaDesc')}
               </p>
               <div className="flex gap-3 justify-center">
                 <a 
@@ -162,13 +164,13 @@ export default function Templates() {
                   className="inline-flex items-center px-6 py-3 bg-gradient-primary hover:bg-gradient-primary/90 text-primary-foreground rounded-lg font-medium transition-all duration-300 hover:glow-effect"
                 >
                   <Palette className="mr-2 h-4 w-4" />
-                  Start Creating
+                  {t('templates.startCreating')}
                 </a>
                 <a 
                   href="/batch" 
                   className="inline-flex items-center px-6 py-3 border border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground rounded-lg font-medium transition-all duration-300"
                 >
-                  Batch Generate
+                  {t('templates.batchGenerate')}
                 </a>
               </div>
             </CardContent>

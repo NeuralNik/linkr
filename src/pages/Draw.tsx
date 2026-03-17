@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Palette, FullScreen, Minimize } from 'lucide-react';
 
 export default function Draw() {
+  const { t } = useTranslation();
   const [canvasSize, setCanvasSize] = useState('large');
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -42,10 +44,10 @@ export default function Draw() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            Digital Drawing Canvas
+            {t('draw.title')}
           </h1>
           <p className="text-gray-600">
-            Create beautiful drawings with our responsive drawing tools
+            {t('draw.subtitle')}
           </p>
         </div>
 
@@ -55,22 +57,22 @@ export default function Draw() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Palette className="h-5 w-5" />
-                Canvas Settings
+                {t('draw.canvasSettings')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-4 items-center">
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="canvas-size">Canvas Size:</Label>
+                  <Label htmlFor="canvas-size">{t('draw.canvasSize')}:</Label>
                   <Select value={canvasSize} onValueChange={setCanvasSize}>
                     <SelectTrigger className="w-32">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="small">Small (600×400)</SelectItem>
-                      <SelectItem value="medium">Medium (800×600)</SelectItem>
-                      <SelectItem value="large">Large (1200×800)</SelectItem>
-                      <SelectItem value="xl">Extra Large (1600×900)</SelectItem>
+                      <SelectItem value="small">{t('draw.sizeSmall')}</SelectItem>
+                      <SelectItem value="medium">{t('draw.sizeMedium')}</SelectItem>
+                      <SelectItem value="large">{t('draw.sizeLarge')}</SelectItem>
+                      <SelectItem value="xl">{t('draw.sizeXL')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -82,7 +84,7 @@ export default function Draw() {
                   className="flex items-center gap-2"
                 >
                   <FullScreen className="h-4 w-4" />
-                  Fullscreen
+                  {t('draw.fullscreen')}
                 </Button>
               </div>
             </CardContent>
@@ -98,7 +100,7 @@ export default function Draw() {
             className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-white"
           >
             <Minimize className="h-4 w-4" />
-            Exit Fullscreen
+            {t('draw.exitFullscreen')}
           </Button>
         )}
 
@@ -113,26 +115,26 @@ export default function Draw() {
         {!isFullscreen && (
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>How to Use</CardTitle>
+              <CardTitle>{t('draw.howToUse')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Drawing Tools:</h4>
+                  <h4 className="font-semibold text-gray-800 mb-2">{t('draw.drawingTools')}:</h4>
                   <ul className="space-y-1">
-                    <li>• <strong>Pencil:</strong> Fine, precise lines</li>
-                    <li>• <strong>Brush:</strong> Smooth, natural strokes</li>
-                    <li>• <strong>Eraser:</strong> Remove parts of your drawing</li>
-                    <li>• <strong>Fill:</strong> Fill entire canvas with selected color</li>
+                    <li>• <strong>{t('draw.pencil')}:</strong> {t('draw.pencilDesc')}</li>
+                    <li>• <strong>{t('draw.brush')}:</strong> {t('draw.brushDesc')}</li>
+                    <li>• <strong>{t('draw.eraser')}:</strong> {t('draw.eraserDesc')}</li>
+                    <li>• <strong>{t('draw.fill')}:</strong> {t('draw.fillDesc')}</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Controls:</h4>
+                  <h4 className="font-semibold text-gray-800 mb-2">{t('draw.controls')}:</h4>
                   <ul className="space-y-1">
-                    <li>• <strong>Mouse:</strong> Click and drag to draw</li>
-                    <li>• <strong>Touch:</strong> Touch and drag on mobile devices</li>
-                    <li>• <strong>Undo/Redo:</strong> Navigate through your drawing history</li>
-                    <li>• <strong>Download:</strong> Save your artwork as PNG</li>
+                    <li>• <strong>{t('draw.mouse')}:</strong> {t('draw.mouseDesc')}</li>
+                    <li>• <strong>{t('draw.touch')}:</strong> {t('draw.touchDesc')}</li>
+                    <li>• <strong>{t('draw.undoRedo')}:</strong> {t('draw.undoRedoDesc')}</li>
+                    <li>• <strong>{t('draw.download')}:</strong> {t('draw.downloadDesc')}</li>
                   </ul>
                 </div>
               </div>
