@@ -352,10 +352,10 @@ export function QRGenerator() {
                       <SelectValue placeholder='Select format' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='png'>PNG</SelectItem>
-                      <SelectItem value='jpg'>JPG</SelectItem>
-                      <SelectItem value='pdf'>PDF</SelectItem>
-                      <SelectItem value='svg'>SVG</SelectItem>
+                      <SelectItem value='png'>{t('home.formatPNG')}</SelectItem>
+                      <SelectItem value='jpg'>{t('home.formatJPG')}</SelectItem>
+                      <SelectItem value='pdf'>{t('home.formatPDF')}</SelectItem>
+                      <SelectItem value='svg'>{t('home.formatSVG')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -363,17 +363,17 @@ export function QRGenerator() {
                 {/* Error Correction Level */}
                 <div className='space-y-2'>
                   <Label htmlFor='error-correction' className='text-sm font-medium'>
-                    Error Correction
+                    {t('home.errorCorrection')}
                   </Label>
                   <Select value={errorCorrection} onValueChange={setErrorCorrection}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select level' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='L'>Low (L)</SelectItem>
-                      <SelectItem value='M'>Medium (M)</SelectItem>
-                      <SelectItem value='Q'>Quartile (Q)</SelectItem>
-                      <SelectItem value='H'>High (H)</SelectItem>
+                      <SelectItem value='L'>{t('home.errorCorrectionL')}</SelectItem>
+                      <SelectItem value='M'>{t('home.errorCorrectionM')}</SelectItem>
+                      <SelectItem value='Q'>{t('home.errorCorrectionQ')}</SelectItem>
+                      <SelectItem value='H'>{t('home.errorCorrectionH')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
