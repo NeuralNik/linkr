@@ -117,7 +117,11 @@
     "readyToCreate": "Ready to create?",
     "ctaDesc": "Use these templates in our QR code generator to create beautiful, professional QR codes in seconds.",
     "startCreating": "Start Creating",
-    "batchGenerate": "Batch Generate"
+    "batchGenerate": "Batch Generate",
+    "selectorTitle": "QR Code Templates",
+    "filterLabel": "Filter by Category",
+    "randomBtn": "Random Template",
+    "resetBtn": "Reset to Default"
   },
   "batch": {
     "title": "Batch Generate",

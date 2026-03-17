@@ -117,7 +117,11 @@
     "readyToCreate": "¿Listo para crear?",
     "ctaDesc": "Usa estas plantillas en nuestro generador de códigos QR para crear hermosos códigos QR profesionales en segundos.",
     "startCreating": "Comenzar a Crear",
-    "batchGenerate": "Generar por Lote"
+    "batchGenerate": "Generar por Lote",
+    "selectorTitle": "Plantillas de Códigos QR",
+    "filterLabel": "Filtrar por Categoría",
+    "randomBtn": "Plantilla Aleatoria",
+    "resetBtn": "Restaurar Predeterminado"
   },
   "batch": {
     "title": "Generar por Lote",
