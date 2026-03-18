@@ -404,3 +404,4 @@ If you find this project helpful, please consider giving it a star on GitHub! It
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+# linkr-logo-multi-lingual-fix
