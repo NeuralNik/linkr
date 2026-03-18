@@ -1,4 +1,5 @@
 import { ArrowRight, Upload, FileText, Loader2, CheckCircle, AlertCircle, Download, Palette } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +21,7 @@ interface BatchResult {
 }
 
 export default function Batch() {
+  const { t } = useTranslation();
   const [urls, setUrls] = useState("");
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,13 +68,13 @@ export default function Batch() {
 
     if (inputMethod === "manual") {
       if (!urls.trim()) {
-        setError("Please enter at least one URL.");
+        setError(t("validation.required"));
         return;
       }
       urlList = urls.split("\n").filter((url) => url.trim());
     } else {
       if (!csvFile) {
-        setError("Please select a CSV file.");
+        setError(t("batch.selectFile"));
         return;
       }
     }
@@ -80,7 +82,7 @@ export default function Batch() {
     if (inputMethod === "manual") {
       const { valid, invalid } = validateUrls(urlList);
       if (valid.length === 0) {
-        setError("Please enter at least one valid URL.");
+        setError(t("validation.invalidUrl"));
         return;
       }
       if (invalid.length > 0) {
@@ -183,7 +185,7 @@ export default function Batch() {
       setCsvFile(file);
       setError("");
     } else {
-      setError("Please select a valid CSV file.");
+      setError(t("batch.selectFile"));
       setCsvFile(null);
     }
   };
@@ -202,11 +204,11 @@ export default function Batch() {
       <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='text-center space-y-4 mb-16 max-w-4xl mx-auto'>
           <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold leading-tight'>
-            Generate <span className='text-neon-green'>Batch QR Codes</span>
+            {t('batch.titleStart')} <span className='text-neon-green'>{t('batch.titleEnd')}</span>
           </h1>
 
           <p className='text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto'>
-            Upload a CSV file or enter multiple URLs to generate QR codes in bulk.
+            {t('batch.subtitle')}
           </p>
         </div>
 
@@ -214,8 +216,8 @@ export default function Batch() {
           {/* Input Method Selection */}
           <Card className='glass-effect border-border/50'>
             <CardHeader>
-              <CardTitle className='text-neon-green'>Choose Input Method</CardTitle>
-              <CardDescription>Select how you want to provide the URLs for batch generation</CardDescription>
+              <CardTitle className='text-neon-green'>{t('batch.chooseInputMethod')}</CardTitle>
+              <CardDescription>{t('batch.selectMethod')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className='flex gap-4'>
@@ -225,7 +227,7 @@ export default function Batch() {
                   className='flex-1'
                 >
                   <FileText className='mr-2 h-4 w-4' />
-                  Manual Entry
+                  {t('batch.manualEntry')}
                 </Button>
                 <Button
                   variant={inputMethod === "csv" ? "default" : "outline"}
@@ -233,7 +235,7 @@ export default function Batch() {
                   className='flex-1'
                 >
                   <Upload className='mr-2 h-4 w-4' />
-                  CSV Upload
+                  {t('batch.csvUpload')}
                 </Button>
               </div>
             </CardContent>
@@ -244,13 +246,13 @@ export default function Batch() {
             <CardHeader>
               <CardTitle className='flex items-center gap-2 text-neon-green'>
                 {inputMethod === "manual" ? <FileText className='h-5 w-5' /> : <Upload className='h-5 w-5' />}
-                {inputMethod === "manual" ? "Enter URLs" : "Upload CSV File"}
+                {inputMethod === "manual" ? t('batch.enterUrls') : t('batch.uploadCsv')}
               </CardTitle>
             </CardHeader>
             <CardContent className='space-y-4'>
               {inputMethod === "manual" ? (
                 <div className='space-y-2'>
-                  <Label htmlFor='urls'>URLs (one per line)</Label>
+                  <Label htmlFor='urls'>{t('batch.urlsLabel')}</Label>
                   <Textarea
                     id='urls'
                     placeholder='https://example.com&#10;https://another-site.com&#10;example.org'
@@ -258,16 +260,16 @@ export default function Batch() {
                     onChange={(e) => setUrls(e.target.value)}
                     className='min-h-32 resize-none'
                   />
-                  <p className='text-sm text-muted-foreground'>Enter one URL per line. Invalid URLs will be skipped.</p>
+                  <p className='text-sm text-muted-foreground'>{t('batch.urlsHint')}</p>
                 </div>
               ) : (
                 <div className='space-y-2'>
-                  <Label htmlFor='csv-file'>CSV File</Label>
+                  <Label htmlFor='csv-file'>{t('batch.csvFileLabel')}</Label>
                   <Input id='csv-file' type='file' accept='.csv' onChange={handleFileChange} className='cursor-pointer' />
                   <p className='text-sm text-muted-foreground'>
-                    Upload a CSV file with URLs in the first column. One URL per row.
+                    {t('batch.csvFileHint')}
                   </p>
-                  {csvFile && <p className='text-sm text-green-600'>Selected: {csvFile.name}</p>}
+                  {csvFile && <p className='text-sm text-green-600'>{t('batch.selected')}: {csvFile.name}</p>}
                 </div>
               )}
 
@@ -288,52 +290,52 @@ export default function Batch() {
                 <CardHeader>
                   <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
                     <Palette className='h-4 w-4' />
-                    Customization Options
+                    {t('batch.customizationOptions')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-4'>
                   <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                     <div className='space-y-2'>
-                      <Label>Error Correction</Label>
+                      <Label>{t('batch.errorCorrection')}</Label>
                       <Select value={errorCorrection} onValueChange={setErrorCorrection}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value='L'>Low (L)</SelectItem>
-                          <SelectItem value='M'>Medium (M)</SelectItem>
-                          <SelectItem value='Q'>Quartile (Q)</SelectItem>
-                          <SelectItem value='H'>High (H)</SelectItem>
+                          <SelectItem value='L'>{t('batch.errorCorrectionLow')}</SelectItem>
+                          <SelectItem value='M'>{t('batch.errorCorrectionMedium')}</SelectItem>
+                          <SelectItem value='Q'>{t('batch.errorCorrectionQuartile')}</SelectItem>
+                          <SelectItem value='H'>{t('batch.errorCorrectionHigh')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className='space-y-2'>
-                      <Label>Size</Label>
+                      <Label>{t('batch.size')}</Label>
                       <Select value={size} onValueChange={setSize}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value='small'>Small</SelectItem>
-                          <SelectItem value='medium'>Medium</SelectItem>
-                          <SelectItem value='large'>Large</SelectItem>
+                          <SelectItem value='small'>{t('batch.sizeSmall')}</SelectItem>
+                          <SelectItem value='medium'>{t('batch.sizeMedium')}</SelectItem>
+                          <SelectItem value='large'>{t('batch.sizeLarge')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className='space-y-2'>
-                      <Label>Border Thickness</Label>
+                      <Label>{t('batch.border')}</Label>
                       <Select value={border.toString()} onValueChange={(value) => setBorder(parseInt(value))}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value='1'>Thin (1)</SelectItem>
-                          <SelectItem value='2'>Light (2)</SelectItem>
-                          <SelectItem value='3'>Medium (3)</SelectItem>
-                          <SelectItem value='4'>Thick (4)</SelectItem>
-                          <SelectItem value='5'>Extra Thick (5)</SelectItem>
+                          <SelectItem value='1'>{t('batch.borderThin')}</SelectItem>
+                          <SelectItem value='2'>{t('batch.borderLight')}</SelectItem>
+                          <SelectItem value='3'>{t('batch.borderMedium')}</SelectItem>
+                          <SelectItem value='4'>{t('batch.borderThick')}</SelectItem>
+                          <SelectItem value='5'>{t('batch.borderExtraThick')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -341,7 +343,7 @@ export default function Batch() {
 
                   <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <div className='space-y-2'>
-                      <Label>QR Code Color</Label>
+                      <Label>{t('batch.qrCodeColor')}</Label>
                       <div className='flex gap-2'>
                         <input
                           type='color'
@@ -360,7 +362,7 @@ export default function Batch() {
                     </div>
 
                     <div className='space-y-2'>
-                      <Label>Background Color</Label>
+                      <Label>{t('batch.backgroundColor')}</Label>
                       <div className='flex gap-2'>
                         <input
                           type='color'
@@ -389,11 +391,11 @@ export default function Batch() {
                 {isLoading ? (
                   <>
                     <Loader2 className='mr-2 h-5 w-5 animate-spin' />
-                    Generating...
+                    {t('batch.processing')}
                   </>
                 ) : (
                   <>
-                    Generate Batch QR Codes
+                    {t('batch.generateBtn')}
                     <ArrowRight className='ml-2 h-5 w-5' />
                   </>
                 )}
@@ -407,7 +409,7 @@ export default function Batch() {
               <CardContent className='pt-6'>
                 <div className='space-y-4'>
                   <div className='flex justify-between text-sm'>
-                    <span>Generating QR codes...</span>
+                    <span>{t('batch.processing')}...</span>
                     <span>{progress}%</span>
                   </div>
                   <Progress value={progress} className='w-full' />
@@ -420,9 +422,9 @@ export default function Batch() {
           {results.length > 0 && (
             <Card className='glass-effect border-border/50'>
               <CardHeader>
-                <CardTitle className='text-neon-green'>Generation Results</CardTitle>
+                <CardTitle className='text-neon-green'>{t('batch.complete')}</CardTitle>
                 <CardDescription>
-                  {successfulCount} successful, {failedCount} failed
+                  {successfulCount} {t('batch.successCount')}, {failedCount} {t('batch.failedCount')}
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-4'>
@@ -446,7 +448,7 @@ export default function Batch() {
                     className='w-full border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground'
                   >
                     <Download className='mr-2 h-4 w-4' />
-                    Download All as ZIP
+                    {t('batch.downloadBtn')}
                   </Button>
                 )}
               </CardContent>
