@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Clipboard, ClipboardCheck, Palette, X, Image as ImageIcon } from "lucide-react";
+import { Download, Link as LinkIcon, Loader2, CheckCircle, AlertCircle, Clipboard, ClipboardCheck, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +14,6 @@ import { showNotification } from "@/utils/ShowNotification";
 import { saveToHistory } from "@/utils/qrHistory";
 
 export function QRGenerator() {
-  const { t } = useTranslation();
   const [url, setUrl] = useState("");
   const [qrCodeImage, setQrCodeImage] = useState("");
   const [formattedUrl, setFormattedUrl] = useState("");
@@ -30,11 +28,6 @@ export function QRGenerator() {
   const [size, setSize] = useState("medium");
   const [border, setBorder] = useState(4);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
-  
-  // Logo state
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [logoError, setLogoError] = useState("");
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -60,48 +53,6 @@ export function QRGenerator() {
     } catch {
       return `https://${inputUrl}`;
     }
-  };
-
-  const handleLogoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLogoError("");
-    const file = e.target.files?.[0];
-    
-    if (!file) return;
-    
-    // Validate file size (2MB max)
-    const MAX_SIZE = 2 * 1024 * 1024;
-    if (file.size > MAX_SIZE) {
-      setLogoError(t("home.logoError"));
-      return;
-    }
-    
-    // Validate file type
-    const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setLogoError(t("home.logoError"));
-      return;
-    }
-    
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const preview = e.target?.result as string;
-      setLogoPreview(preview);
-    };
-    reader.readAsDataURL(file);
-    
-    setLogoFile(file);
-    showNotification(
-      t("home.generateBtn"),
-      `${file.name} ${t("home.selectLogo")}`,
-      "/success-icon.png"
-    );
-  };
-
-  const handleRemoveLogo = () => {
-    setLogoFile(null);
-    setLogoPreview(null);
-    setLogoError("");
   };
 
   useEffect(() => { // Reset Copy to clip board icon and button text after 10s.
@@ -137,12 +88,12 @@ export function QRGenerator() {
 
   const handleGenerate = async () => {
     if (!url.trim()) {
-      setError(t("home.invalidURL"));
+      setError("Please enter a URL to generate a QR code.");
       return;
     }
 
     if (!validateUrl(url)) {
-      setError(t("home.invalidURL"));
+      setError("Please enter a valid URL. The URL format is incorrect.");
       return;
     }
 
@@ -151,28 +102,25 @@ export function QRGenerator() {
     setSuccess(false);
 
     try {
-      const formData = new FormData();
-      formData.append("url", url);
-      formData.append("foreground_color", foregroundColor);
-      formData.append("background_color", backgroundColor);
-      formData.append("format", downloadFormat);
-      formData.append("error_correction", errorCorrection);
-      formData.append("size", size);
-      formData.append("border", border.toString());
-      
-      // Add logo if selected
-      if (logoFile) {
-        formData.append("logo", logoFile);
-      }
-
       const response = await fetch(`${API_BASE_URL}/generate-qr`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url,
+          foreground_color: foregroundColor,
+          background_color: backgroundColor,
+          format: downloadFormat,
+          error_correction: errorCorrection,
+          size: size,
+          border: border,
+        }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || t("home.error"));
+        throw new Error(errorData.detail || "Failed to generate QR code due to a server error.");
       }
 
       const data = await response.json();
@@ -195,7 +143,7 @@ export function QRGenerator() {
       
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : t("home.error");
+      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
       setError(errorMessage);
       setIsLoading(false);
     }
@@ -262,7 +210,7 @@ export function QRGenerator() {
           {success && (
             <Alert className='border-neon-green/50 bg-neon-green/10'>
               <CheckCircle className='h-4 w-4 text-neon-green' />
-              <AlertDescription className='text-neon-green'>{t('home.qrSuccess')}</AlertDescription>
+              <AlertDescription className='text-neon-green'>QR code generated successfully!</AlertDescription>
             </Alert>
           )}
 
@@ -276,68 +224,12 @@ export function QRGenerator() {
             }}
           />
 
-          {/* Logo Upload Section */}
-          <Card className='border-border/30 bg-card/50'>
-            <CardHeader>
-              <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
-                <ImageIcon className='h-4 w-4' />
-                {t('home.logoUpload')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className='space-y-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='logo-upload' className='text-sm font-medium'>
-                  {t('home.logoInfo')}
-                </Label>
-                <div className='flex items-center gap-2'>
-                  <Input
-                    id='logo-upload'
-                    type='file'
-                    accept='image/png,image/jpeg,image/jpg,image/svg+xml'
-                    onChange={handleLogoSelect}
-                    className='cursor-pointer'
-                  />
-                  {logoFile && (
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={handleRemoveLogo}
-                      className='text-red-500 hover:text-red-700'
-                    >
-                      <X className='h-4 w-4' />
-                    </Button>
-                  )}
-                </div>
-                {logoError && (
-                  <Alert className='border-red-500/50 bg-red-500/10'>
-                    <AlertCircle className='h-4 w-4 text-red-500' />
-                    <AlertDescription className='text-red-500'>{logoError}</AlertDescription>
-                  </Alert>
-                )}
-              </div>
-
-              {logoPreview && (
-                <div className='space-y-2'>
-                  <p className='text-sm text-muted-foreground'>{t('home.logoPreview')}:</p>
-                  <div className='border border-border/50 rounded-lg p-3 flex justify-center bg-white'>
-                    <img
-                      src={logoPreview}
-                      alt='Logo Preview'
-                      className='max-h-24 max-w-24 object-contain'
-                    />
-                  </div>
-                  <p className='text-xs text-muted-foreground'>
-                    {t('home.logoEmbedInfo')}
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          {/* Customization Options */}
           <Card className='border-border/30 bg-card/50'>
             <CardHeader>
               <CardTitle className='flex items-center gap-2 text-sm text-muted-foreground'>
                 <Palette className='h-4 w-4' />
-                {t('home.customizationOptions')}
+                Customization Options
               </CardTitle>
             </CardHeader>
             <CardContent className='space-y-4'>
@@ -345,17 +237,17 @@ export function QRGenerator() {
                 {/* Download Format */}
                 <div className='space-y-2'>
                   <Label htmlFor='format' className='text-sm font-medium'>
-                    {t('home.formatLabel')}
+                    Download Format
                   </Label>
                   <Select value={downloadFormat} onValueChange={setDownloadFormat}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select format' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='png'>{t('home.formatPNG')}</SelectItem>
-                      <SelectItem value='jpg'>{t('home.formatJPG')}</SelectItem>
-                      <SelectItem value='pdf'>{t('home.formatPDF')}</SelectItem>
-                      <SelectItem value='svg'>{t('home.formatSVG')}</SelectItem>
+                      <SelectItem value='png'>PNG</SelectItem>
+                      <SelectItem value='jpg'>JPG</SelectItem>
+                      <SelectItem value='pdf'>PDF</SelectItem>
+                      <SelectItem value='svg'>SVG</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -363,17 +255,17 @@ export function QRGenerator() {
                 {/* Error Correction Level */}
                 <div className='space-y-2'>
                   <Label htmlFor='error-correction' className='text-sm font-medium'>
-                    {t('home.errorCorrection')}
+                    Error Correction
                   </Label>
                   <Select value={errorCorrection} onValueChange={setErrorCorrection}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select level' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='L'>{t('home.errorCorrectionL')}</SelectItem>
-                      <SelectItem value='M'>{t('home.errorCorrectionM')}</SelectItem>
-                      <SelectItem value='Q'>{t('home.errorCorrectionQ')}</SelectItem>
-                      <SelectItem value='H'>{t('home.errorCorrectionH')}</SelectItem>
+                      <SelectItem value='L'>Low (L)</SelectItem>
+                      <SelectItem value='M'>Medium (M)</SelectItem>
+                      <SelectItem value='Q'>Quartile (Q)</SelectItem>
+                      <SelectItem value='H'>High (H)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -381,16 +273,16 @@ export function QRGenerator() {
                 {/* Size */}
                 <div className='space-y-2'>
                   <Label htmlFor='size' className='text-sm font-medium'>
-                    {t('home.qrSize')}
+                    Size
                   </Label>
                   <Select value={size} onValueChange={setSize}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select size' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='small'>{t('home.qrSizeSmall')}</SelectItem>
-                      <SelectItem value='medium'>{t('home.qrSizeMedium')}</SelectItem>
-                      <SelectItem value='large'>{t('home.qrSizeLarge')}</SelectItem>
+                      <SelectItem value='small'>Small</SelectItem>
+                      <SelectItem value='medium'>Medium</SelectItem>
+                      <SelectItem value='large'>Large</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -400,7 +292,7 @@ export function QRGenerator() {
                 {/* Foreground Color */}
                 <div className='space-y-2'>
                   <Label htmlFor='foreground' className='text-sm font-medium'>
-                    {t('home.foregroundColor')}
+                    QR Code Color
                   </Label>
                   <div className='flex gap-2'>
                     <input
@@ -423,7 +315,7 @@ export function QRGenerator() {
                 {/* Background Color */}
                 <div className='space-y-2'>
                   <Label htmlFor='background' className='text-sm font-medium'>
-                    {t('home.backgroundColor')}
+                    Background Color
                   </Label>
                   <div className='flex gap-2'>
                     <input
@@ -446,18 +338,18 @@ export function QRGenerator() {
                 {/* Border Thickness */}
                 <div className='space-y-2'>
                   <Label htmlFor='border' className='text-sm font-medium'>
-                    {t('home.border')}
+                    Border Thickness
                   </Label>
                   <Select value={border.toString()} onValueChange={(value) => setBorder(parseInt(value))}>
                     <SelectTrigger className='border-border focus:border-neon-green'>
                       <SelectValue placeholder='Select thickness' />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='1'>{t('home.borderThin')}</SelectItem>
-                      <SelectItem value='2'>{t('home.borderLight')}</SelectItem>
-                      <SelectItem value='3'>{t('home.borderMedium')}</SelectItem>
-                      <SelectItem value='4'>{t('home.borderThick')}</SelectItem>
-                      <SelectItem value='5'>{t('home.borderExtraThick')}</SelectItem>
+                      <SelectItem value='1'>Thin (1)</SelectItem>
+                      <SelectItem value='2'>Light (2)</SelectItem>
+                      <SelectItem value='3'>Medium (3)</SelectItem>
+                      <SelectItem value='4'>Thick (4)</SelectItem>
+                      <SelectItem value='5'>Extra Thick (5)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -473,10 +365,10 @@ export function QRGenerator() {
             {isLoading ? (
               <>
                 <Loader2 className='mr-2 h-5 w-5 animate-spin' />
-                {t('home.processing')}
+                Generating...
               </>
             ) : (
-              t('home.generateBtn')
+              "Generate QR Code"
             )}
           </Button>
         </CardContent>
@@ -486,7 +378,7 @@ export function QRGenerator() {
       {qrCodeImage && (
         <Card className='glass-effect border-border/50 hover:border-neon-green/50 transition-all duration-300 animate-fade-in'>
           <CardHeader>
-            <CardTitle className='text-center text-neon-green'>{t('home.qrCodeTitle')}</CardTitle>
+            <CardTitle className='text-center text-neon-green'>Your QR Code</CardTitle>
           </CardHeader>
           <CardContent className='space-y-6'>
             <div className='flex justify-center'>
@@ -501,14 +393,14 @@ export function QRGenerator() {
             </div>
 
             <div className='text-center space-y-2'>
-              <p className='text-sm text-muted-foreground'>{t('home.scanInstructions')}</p>
+              <p className='text-sm text-muted-foreground'>Scan with your phone camera</p>
               <p className='text-xs text-muted-foreground break-all'>{formattedUrl}</p>
             </div>
 
             {isQRCodeCopiedToClipboard && (
               <Alert className='border-neon-green/50 bg-neon-green/10'>
                 <CheckCircle className='h-4 w-4 text-neon-green' />
-                <AlertDescription className='text-neon-green'>{t('home.clipboardCopied')}</AlertDescription>
+                <AlertDescription className='text-neon-green'>Copied QR code to clipboard!</AlertDescription>
               </Alert>
             )}
 
@@ -522,12 +414,12 @@ export function QRGenerator() {
                     isQRCodeCopiedToClipboard ? (
                       <>
                         <ClipboardCheck className='mr-2 h-4 w-4' />
-                        {t('home.copiedBtn')}
+                        Copied!
                       </>
                     ) : (
                       <>
                         <Clipboard className='mr-2 h-4 w-4' />
-                        {t('home.copyQR')}
+                        Copy QR Code
                       </>
                     )
                   }
@@ -538,7 +430,7 @@ export function QRGenerator() {
                   className='w-full border-neon-green text-neon-green hover:bg-neon-green hover:text-primary-foreground transition-all duration-300'
                 >
                   <Download className='mr-2 h-4 w-4' />
-                  {t('home.downloadQR')} {downloadFormat.toUpperCase()}
+                  Download {downloadFormat.toUpperCase()}
                 </Button>
               </div>
           </CardContent>
