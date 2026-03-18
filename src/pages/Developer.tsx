@@ -1,11 +1,8 @@
 import { Github, Linkedin, Mail, Code, Heart } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Developer() {
-  const { t } = useTranslation();
-  
   const skills = [
     'React.js', 'Python Programming', 'UI/UX Design', 
     'Database Designing', 'AI/ML', 'Gen AI'
@@ -25,12 +22,12 @@ export default function Developer() {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold">
-            {t('developer.greeting')}{' '}
-            <span className="text-neon-green text-glow">{t('developer.name')}</span>
+            Hey, I'm{' '}
+            <span className="text-neon-green text-glow">Sagnik</span>
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            {t('developer.tagline')}
+            Exploring AI Milestones.
           </p>
         </div>
 
@@ -40,18 +37,21 @@ export default function Developer() {
             <CardHeader>
               <CardTitle className="text-2xl text-neon-green flex items-center gap-2">
                 <Heart className="w-6 h-6" />
-                {t('developer.aboutMeTitle')}
+                About Me
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground">
               <p>
-                {t('developer.aboutMeDesc1')}
+                I'm a passionate developer with over 2 years of experience in creating modern, 
+                user-friendly applications. I believe in writing clean, maintainable code 
+                and creating beautiful user interfaces that provide exceptional user experiences.
               </p>
               <p>
-                {t('developer.aboutMeDesc2')}
+                I'm constantly learning new technologies and staying up-to-date with industry trends.
               </p>
               <p>
-                {t('developer.aboutMeDesc3')}
+                When I'm not coding, you can find me exploring new cafes, reading tech blogs, 
+                or listening to good music.
               </p>
             </CardContent>
           </Card>
@@ -61,7 +61,7 @@ export default function Developer() {
             <CardHeader>
               <CardTitle className="text-xl text-neon-green flex items-center gap-2">
                 <Mail className="w-5 h-5" />
-                {t('developer.getInTouch')}
+                Get In Touch
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -84,7 +84,7 @@ export default function Developer() {
                 >
                   <a href="https://github.com/writetosagnik" target="_blank">
                     <Github className="w-4 h-4 mr-2" />
-                    {t('developer.github')}
+                    GitHub Profile
                   </a>
                 </Button>
                 
@@ -95,7 +95,7 @@ export default function Developer() {
                 >
                   <a href="https://www.linkedin.com/in/sagnik-pal-930160277/" target="_blank">
                     <Linkedin className="w-4 h-4 mr-2" />
-                    {t('developer.linkedin')}
+                    LinkedIn
                   </a>
                 </Button>
                 
@@ -106,7 +106,7 @@ export default function Developer() {
                 >
                   <a href="https://www.reddit.com/user/Comfortable-Web-5719/" target="_blank">
                     <Mail className="w-4 h-4 mr-2" />
-                    {t('developer.reddit')}
+                    Reddit
                   </a>
                 </Button>
               </div>
@@ -118,10 +118,10 @@ export default function Developer() {
         <Card className="mb-16 glass-effect border-border/50 hover:border-neon-green/50 transition-all duration-300">
           <CardHeader>
             <CardTitle className="text-2xl text-neon-green text-center">
-              {t('developer.skillsTitle')}
+              Skills & Technologies
             </CardTitle>
             <CardDescription className="text-center">
-              {t('developer.skillsDesc')}
+              Technologies I work with to bring ideas to life
             </CardDescription>
           </CardHeader>
           <CardContent>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -187,7 +186,6 @@ const QRHistoryCard: React.FC<QRHistoryCardProps> = ({ qr, onDelete, onRegenerat
 };
 
 export const QRHistory: React.FC = () => {
-  const { t } = useTranslation();
   const [history, setHistory] = useLocalStorage<QRHistoryItem[]>('qr-history', []);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'url'>('newest');
@@ -245,12 +243,12 @@ export const QRHistory: React.FC = () => {
       <Card className="glass-card">
         <CardContent className="flex flex-col items-center justify-center py-12 text-center">
           <History className="w-16 h-16 text-muted-foreground/50 mb-4" />
-          <h3 className="text-lg font-medium mb-2">{t('history.noCodesYet')}</h3>
+          <h3 className="text-lg font-medium mb-2">No QR Codes Yet</h3>
           <p className="text-muted-foreground mb-4">
-            {t('history.noCodesDesc')}
+            Your generated QR codes will appear here for easy access
           </p>
           <Button variant="outline" onClick={() => window.location.href = '/'}>
-            {t('history.generateFirst')}
+            Generate Your First QR Code
           </Button>
         </CardContent>
       </Card>
@@ -262,15 +260,15 @@ export const QRHistory: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-glow">{t('history.title')}</h2>
+          <h2 className="text-2xl font-bold text-glow">QR Code History</h2>
           <p className="text-muted-foreground">
-            {history.length} QR code{history.length !== 1 ? 's' : ''} {t('common.generated')}
+            {history.length} QR code{history.length !== 1 ? 's' : ''} generated
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={exportHistory}>
             <Download className="w-4 h-4 mr-2" />
-            {t('history.export')}
+            Export
           </Button>
           <Button 
             variant="outline" 
@@ -278,7 +276,7 @@ export const QRHistory: React.FC = () => {
             className="text-red-400 hover:text-red-300"
           >
             <Trash2 className="w-4 h-4 mr-2" />
-            {t('history.clearAll')}
+            Clear All
           </Button>
         </div>
       </div>
@@ -290,7 +288,7 @@ export const QRHistory: React.FC = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder={t('history.search')}
+                placeholder="Search by URL or template name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -303,9 +301,9 @@ export const QRHistory: React.FC = () => {
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="bg-background border border-border rounded-md px-3 py-2 text-sm"
               >
-                <option value="newest">{t('history.sortNewest')}</option>
-                <option value="oldest">{t('history.sortOldest')}</option>
-                <option value="url">{t('history.sortURL')}</option>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="url">By URL</option>
               </select>
             </div>
           </div>
@@ -317,9 +315,9 @@ export const QRHistory: React.FC = () => {
         <Card className="glass-card">
           <CardContent className="flex flex-col items-center justify-center py-8 text-center">
             <Search className="w-12 h-12 text-muted-foreground/50 mb-4" />
-            <h3 className="text-lg font-medium mb-2">{t('history.noResults')}</h3>
+            <h3 className="text-lg font-medium mb-2">No Results Found</h3>
             <p className="text-muted-foreground">
-              {t('history.noCodesDesc')}
+              Try adjusting your search terms or filters
             </p>
           </CardContent>
         </Card>

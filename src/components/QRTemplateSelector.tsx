@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +17,6 @@ export function QRTemplateSelector({
   onTemplateSelect, 
   currentColors 
 }: QRTemplateSelectorProps) {
-  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
   
   const filteredTemplates = selectedCategory === 'all' 
@@ -45,13 +43,13 @@ export function QRTemplateSelector({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm text-muted-foreground">
           <Palette className="h-4 w-4" />
-          {t('templates.selectorTitle')}
+          QR Code Templates
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Category Filter */}
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('templates.filterLabel')}</label>
+          <label className="text-sm font-medium">Filter by Category</label>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger className="border-border focus:border-neon-green">
               <SelectValue />
@@ -143,7 +141,7 @@ export function QRTemplateSelector({
             }}
             className="flex-1"
           >
-            {t('templates.randomBtn')}
+            Random Template
           </Button>
           <Button
             variant="outline"
@@ -158,7 +156,7 @@ export function QRTemplateSelector({
             })}
             className="flex-1"
           >
-            {t('templates.resetBtn')}
+            Reset to Default
           </Button>
         </div>
       </CardContent>

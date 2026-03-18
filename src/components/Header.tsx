@@ -1,23 +1,20 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import linkrLogo from "@/assets/linkr-logo.png";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { t } = useTranslation();
 
   const navigation = [
-    { name: t("nav.home"), href: "/" },
-    { name: t("nav.batch"), href: "/batch" },
-    { name: t("nav.templates"), href: "/templates" },
-    { name: t("nav.history"), href: "/history" },
-    { name: t("nav.developer"), href: "/developer" },
+    { name: "Home", href: "/" },
+    { name: "Batch Generate", href: "/batch" },
+    { name: "Templates", href: "/templates" },
+    { name: "History", href: "/history" },
+    { name: "Know Developer", href: "/developer" },
   ];
 
   const isActive = (href: string) => location.pathname === href;
@@ -42,7 +39,7 @@ export function Header() {
           <nav className='hidden md:flex items-center space-x-8'>
             {navigation.map((item) => (
               <Link
-                key={item.href}
+                key={item.name}
                 to={item.href}
                 className={`relative px-3 py-2 text-sm font-medium transition-colors duration-300 ${
                   isActive(item.href) ? "text-neon-green text-glow" : "text-foreground hover:text-neon-green-bright"
@@ -54,13 +51,11 @@ export function Header() {
                 )}
               </Link>
             ))}
-            <LanguageSwitcher />
             <ThemeToggle />
           </nav>
 
           {/* Mobile menu button */}
           <div className='md:hidden flex items-center space-x-2'>
-            <LanguageSwitcher />
             <ThemeToggle />
             <Button
               variant='ghost'
@@ -79,7 +74,7 @@ export function Header() {
             <div className='px-2 pt-2 pb-3 space-y-1'>
               {navigation.map((item) => (
                 <Link
-                  key={item.href}
+                  key={item.name}
                   to={item.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 ${
